@@ -331,7 +331,7 @@ async def on_message(message):
           print(pers)
           await mandar_mensaje(message.channel,"Añadido <@{0}> como autorizado".format(pers))
         elif message.content == "/changelog" and autorizado == 1:
-          await message.channel.send("```Changelog del bot\n- Añadido el comando /monitorear para establecer el monitoreo de una facción\n - Añadido el comando /autoriza para añadir a un nuevo autorizado al bot\n - Añadido el /acepta_cita para establecer el canal de recibir citas\n - Ahora el bot pregunta por md para no molestar.\n- Mejorada la estabilidad (ahora no se bería caer, en toería).\n- Añadido al fín el comando /cita para pedir cita con policía, EMS o Mecánico.\n- Funciones mejoradas para las facciones (descúbrelo IC)")
+          await message.channel.send("```Changelog del bot\n- Añadido el comando /monitorear para establecer el monitoreo de una facción\n - Añadido el comando /autoriza para añadir a un nuevo autorizado al bot\n - Añadido el /acepta_cita para establecer el canal de recibir citas\n - Ahora el bot pregunta por md para no molestar.\n- Mejorada la estabilidad (ahora no se bería caer, en toería).\n- Añadido al fín el comando /cita para pedir cita con policía, EMS o Mecánico.\n- Funciones mejoradas para las facciones (descúbrelo IC)```")
         elif message.content == "/alta" and autorizado == 1:
           
           nombre = await pregunta_md(message,client,"Escriba el nombre del nuevo miembro")
@@ -576,7 +576,7 @@ async def on_message(message):
               
                 mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
                 mycursor = mydb.cursor()  
-                mycursor.execute("SELECT `id`,`canal_cita` FROM entidad WHERE tipo_entidad = {0} AND servidor = {1}".format(volver,servidor_id))
+                mycursor.execute("SELECT `id`,`canal_cita` FROM entidad WHERE tipo_entidad = \"{0}\" AND servidor = {1}".format(volver,servidor_id))
                 
                 myresult = mycursor.fetchall()
                 canal_id = 0
