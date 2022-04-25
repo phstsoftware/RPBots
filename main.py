@@ -115,7 +115,7 @@ async def mandar_mensaje(channel, texto):
   :param texto: str, Texto a mandar
   """
   await channel.send(texto,delete_after = 60)
-async def pregunta_md(mensaje, texto):
+async def pregunta_md(mensaje, client, texto):
   """
   :param mensaje: int, mensaje principal
   :param texto: str, Texto a mandar
@@ -318,8 +318,8 @@ async def on_message(message):
             print("no se puede borrar")
         elif message.content == "/autoriza" and autorizado == 1:
          
-          pers = await pregunta_md(message,"Escriba el id del nuevo autorizado")
-          nombre = await pregunta_md(message, "Escriba el nombre ic")
+          pers = await pregunta_md(message,client,"Escriba el id del nuevo autorizado")
+          nombre = await pregunta_md(message,client, "Escriba el nombre ic")
           sql = "INSERT INTO autorizado (discord_id, entidad, nombre) VALUES (%s, %s, %s)"
           val = (pers, entidad, nombre)
           mycursor.execute(sql, val)
@@ -330,12 +330,14 @@ async def on_message(message):
           print(x)
           print(pers)
           await mandar_mensaje(message.channel,"Añadido <@{0}> como autorizado".format(pers))
+        elif message.content == "/changelog" and autorizado == 1:
+          await message.channel.send("```Changelog del bot\n- Añadido el comando /monitorear para establecer el monitoreo de una facción\n - Añadido el comando /autoriza para añadir a un nuevo autorizado al bot\n - Añadido el /acepta_cita para establecer el canal de recibir citas\n - Ahora el bot pregunta por md para no molestar.\n- Mejorada la estabilidad (ahora no se bería caer, en toería).\n- Añadido al fín el comando /cita para pedir cita con policía, EMS o Mecánico.\n- Funciones mejoradas para las facciones (descúbrelo IC)")
         elif message.content == "/alta" and autorizado == 1:
           
-          nombre = await pregunta_md(message,"Escriba el nombre del nuevo miembro")
-          rango = await pregunta_md(message,"Escriba el rango del nuevo miembro")
-          id_pers = await pregunta_md(message,"Escriba el id de Discord del nuevo miembro")
-          num_placa = await pregunta_md(message,"Escriba el número de placa/identificación del nuevo miembro")
+          nombre = await pregunta_md(message,client,"Escriba el nombre del nuevo miembro")
+          rango = await pregunta_md(message,client,"Escriba el rango del nuevo miembro")
+          id_pers = await pregunta_md(message,client,"Escriba el id de Discord del nuevo miembro")
+          num_placa = await pregunta_md(message,client,"Escriba el número de placa/identificación del nuevo miembro")
           sql = "INSERT INTO empleados (entidad, discord_id, nombre, rango, trabajado, entrado_trabajar, en_servicio, numero_de_placa) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
           val = (entidad, id_pers, nombre, rango, 0, 0, 0, num_placa)
           mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
@@ -347,7 +349,7 @@ async def on_message(message):
           await mandar_mensaje(message.channel,"Añadido {0} (<@{1}>)".format(nombre,id_pers))
         elif message.content == "/baja" and autorizado == 1:
           
-          id_pers = await pregunta_md(message,"Escriba el id de Discord del miembro a eliminar")
+          id_pers = await pregunta_md(message,client,"Escriba el id de Discord del miembro a eliminar")
           
           sql = "DELETE FROM empleados WHERE discord_id = {0}".format(id_pers)
          
@@ -362,8 +364,8 @@ async def on_message(message):
             print("no se puede borrar")
         elif message.content == "/entidad" and entidad_existe(message,mycursor) == False:
           await mandar_mensaje(message.channel,"```Bienvenido al nuevo bot```")
-          nombre = await pregunta_md(message,"```Escriba el nombre de la nueva entidad```")
-          server = await pregunta_md(message,"Introduzca la clave da activación de su servidor, si no la conoce pregunte a <@418102275974758419>") # si no es correcta se rechazará por la bd
+          nombre = await pregunta_md(message,client,"```Escriba el nombre de la nueva entidad```")
+          server = await pregunta_md(message,client,"Introduzca la clave da activación de su servidor, si no la conoce pregunte a <@418102275974758419>") # si no es correcta se rechazará por la bd
           mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
           mycursor = mydb.cursor() 
           sql = "INSERT INTO entidad (nombre, discord, actualizado, servidor) VALUES (%s, %s, %s, %s)"
@@ -450,7 +452,7 @@ async def on_message(message):
            
             encontrar = False
             while(encontrar==False):
-              nombre = await pregunta_md(message,"```Introduzca el nombre de la entidad a sincronizar```");
+              nombre = await pregunta_md(message,client,"```Introduzca el nombre de la entidad a sincronizar```");
               encontrar = False
               mycursor.execute("SELECT `id` FROM entidad WHERE nombre = \"{0}\" AND servidor = {1}".format(nombre,server))
               myresult = mycursor.fetchall()
@@ -459,8 +461,8 @@ async def on_message(message):
                 id = x[0] #nos guardamos el id de la entidad de destino
            
             
-            dispensable = await pregunta_md(message, "```escriba el nombre del dispensable a controlar```")
-            precio = await pregunta_md(message, "```introduzca el precio por unidad a cobrar a la entidad```")
+            dispensable = await pregunta_md(message,client, "```escriba el nombre del dispensable a controlar```")
+            precio = await pregunta_md(message,client, "```introduzca el precio por unidad a cobrar a la entidad```")
             
             mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
             mycursor = mydb.cursor() 
@@ -481,7 +483,7 @@ async def on_message(message):
             await message.delete()
             encontrar = False
             while(encontrar==False):
-              nombre = await pregunta_md(message,"```Introduzca el nombre de la entidad a monitorear```");
+              nombre = await pregunta_md(message,client,"```Introduzca el nombre de la entidad a monitorear```");
               encontrar = False
               
               mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
@@ -523,14 +525,14 @@ async def on_message(message):
           for x in myresult:
             servidor_id = x[0] # nos guardamos el id
           if servidor_id!=-1:
-            volver = await pregunta_md(message,"Bienvenido al software de citas, por favor indique con que facción desea una cita: LSPD, LSFD o MEC (para mecánico)")
+            volver = await pregunta_md(message,client,"Bienvenido al software de citas, por favor indique con que facción desea una cita: LSPD, LSFD o MEC (para mecánico)")
           
             
             while volver!="LSPD" and volver!="LSFD" and volver!="Mecánico":
-              volver = await pregunta_md(message,"Por favor escriba correctamente la facción: LSPD, LSFD o MEC (para mecánico)")
+              volver = await pregunta_md(message,client,"Por favor escriba correctamente la facción: LSPD, LSFD o MEC (para mecánico)")
               print (volver)
             await message.delete()
-            pre_dia = await pregunta_md(message,"Por favor, indica que día quieres la cita, por ejemplo 2022-05-01 en formato YYYY-MM-DD")
+            pre_dia = await pregunta_md(message,client,"Por favor, indica que día quieres la cita, por ejemplo 2022-05-01 en formato YYYY-MM-DD")
            
             z_dia = pre_dia
             print(z_dia)
@@ -538,7 +540,7 @@ async def on_message(message):
             close = 0
             while is_date(z_dia)==0 and close == 0:
               #not valid
-                loco_dia = await pregunta_md(message,"Por favor, introduce una fecha en formato YYYY-MM-DD o escribe \"cancelar\"")
+                loco_dia = await pregunta_md(message,client,"Por favor, introduce una fecha en formato YYYY-MM-DD o escribe \"cancelar\"")
              
                 dia = loco_dia
                 z_dia = loco_dia
@@ -552,21 +554,21 @@ async def on_message(message):
               
               dia = z_dia
               while calculate_age(datetime. strptime(dia, '%Y-%m-%d')) <= 0:
-                  l_dia = await pregunta_md(message,"Por favor, introduze una fecha en el futuro")
+                  l_dia = await pregunta_md(message,client,"Por favor, introduze una fecha en el futuro")
                   await message.author.send("Por favor, introduze una fecha en el futuro")
 
                   
                   dia = l_dia
 
               
-              franja = await pregunta_md(message, "Indícame brevemente en qué franja horaria te gustaría que te atenidésemos")
-              mensaje = await pregunta_md(message,"De acuerdo, cita el {0} . ¿Podrías explicar brevemente el motivo de tu visita?".format(dia,volver))
+              franja = await pregunta_md(message,client, "Indícame brevemente en qué franja horaria te gustaría que te atenidésemos")
+              mensaje = await pregunta_md(message,client,"De acuerdo, cita el {0} . ¿Podrías explicar brevemente el motivo de tu visita?".format(dia,volver))
               
-              res = await pregunta_md(message,"Perfecto, en resumen tienes una cita el día {} con qualquier miembro que se encuentre disponible para {}. Si es correcto escribe 1 o \"sí\" si no es correcto escribe 0 o \"no\"".format(dia,mensaje))
+              res = await pregunta_md(message,client,"Perfecto, en resumen tienes una cita el día {} con qualquier miembro que se encuentre disponible para {}. Si es correcto escribe 1 o \"sí\" si no es correcto escribe 0 o \"no\"".format(dia,mensaje))
                 
             
               if res == "1" or res == "sí" or res == "si" or res == "s" or res == "i":
-                name = await pregunta_md(message,"vale, por favor indícame tu nombre IC")
+                name = await pregunta_md(message,client,"vale, por favor indícame tu nombre IC")
               
                 
                 
