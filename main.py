@@ -115,7 +115,7 @@ async def mandar_mensaje(channel, texto):
   :param texto: str, Texto a mandar
   """
   await channel.send(texto,delete_after = 60)
-async def pregunta_md(mensaje, client, texto):
+async def pregunta_md(mensaje, texto):
   """
   :param mensaje: int, mensaje principal
   :param texto: str, Texto a mandar
@@ -523,14 +523,14 @@ async def on_message(message):
           for x in myresult:
             servidor_id = x[0] # nos guardamos el id
           if servidor_id!=-1:
-            volver = await pregunta_md(message, client,"Bienvenido al software de citas, por favor indique con que facción desea una cita: LSPD, LSFD o MEC (para mecánico)")
+            volver = await pregunta_md(message,"Bienvenido al software de citas, por favor indique con que facción desea una cita: LSPD, LSFD o MEC (para mecánico)")
           
             
             while volver!="LSPD" and volver!="LSFD" and volver!="Mecánico":
-              volver = await pregunta_md(message, client,"Por favor escriba correctamente la facción: LSPD, LSFD o MEC (para mecánico)")
+              volver = await pregunta_md(message,"Por favor escriba correctamente la facción: LSPD, LSFD o MEC (para mecánico)")
               print (volver)
             await message.delete()
-            pre_dia = await pregunta_md(message, client,"Por favor, indica que día quieres la cita, por ejemplo 2022-05-01 en formato YYYY-MM-DD")
+            pre_dia = await pregunta_md(message,"Por favor, indica que día quieres la cita, por ejemplo 2022-05-01 en formato YYYY-MM-DD")
            
             z_dia = pre_dia
             print(z_dia)
@@ -538,7 +538,7 @@ async def on_message(message):
             close = 0
             while is_date(z_dia)==0 and close == 0:
               #not valid
-                loco_dia = await pregunta_md(message, client,"Por favor, introduce una fecha en formato YYYY-MM-DD o escribe \"cancelar\"")
+                loco_dia = await pregunta_md(message,"Por favor, introduce una fecha en formato YYYY-MM-DD o escribe \"cancelar\"")
              
                 dia = loco_dia
                 z_dia = loco_dia
@@ -552,21 +552,21 @@ async def on_message(message):
               
               dia = z_dia
               while calculate_age(datetime. strptime(dia, '%Y-%m-%d')) <= 0:
-                  l_dia = await pregunta_md(message, client,"Por favor, introduze una fecha en el futuro")
+                  l_dia = await pregunta_md(message,"Por favor, introduze una fecha en el futuro")
                   await message.author.send("Por favor, introduze una fecha en el futuro")
 
                   
                   dia = l_dia
 
               
-              franja = await pregunta_md(message, client, "Indícame brevemente en qué franja horaria te gustaría que te atenidésemos")
-              mensaje = await pregunta_md(message,client,"De acuerdo, cita el {0} . ¿Podrías explicar brevemente el motivo de tu visita?".format(dia,volver))
+              franja = await pregunta_md(message, "Indícame brevemente en qué franja horaria te gustaría que te atenidésemos")
+              mensaje = await pregunta_md(message,"De acuerdo, cita el {0} . ¿Podrías explicar brevemente el motivo de tu visita?".format(dia,volver))
               
-              res = await pregunta_md(message,client,"Perfecto, en resumen tienes una cita el día {} con qualquier miembro que se encuentre disponible para {}. Si es correcto escribe 1 o \"sí\" si no es correcto escribe 0 o \"no\"".format(dia,mensaje))
+              res = await pregunta_md(message,"Perfecto, en resumen tienes una cita el día {} con qualquier miembro que se encuentre disponible para {}. Si es correcto escribe 1 o \"sí\" si no es correcto escribe 0 o \"no\"".format(dia,mensaje))
                 
             
               if res == "1" or res == "sí" or res == "si" or res == "s" or res == "i":
-                name = await pregunta_md(message,client,"vale, por favor indícame tu nombre IC")
+                name = await pregunta_md(message,"vale, por favor indícame tu nombre IC")
               
                 
                 
