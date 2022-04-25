@@ -132,7 +132,7 @@ async def pregunta_md(mensaje, texto):
   time.sleep(1)
   
   return volver
-async def pregunta_md(mensaje, texto):
+async def pregunta(mensaje, texto):
   """
   :param mensaje: int, mensaje principal
   :param texto: str, Texto a mandar
