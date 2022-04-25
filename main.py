@@ -2,7 +2,7 @@
 #Todos los derechos reservados
 import base64
 from facciones import LSFD,LSPD,Mecanico
-from keep_alive import live 
+
 from fpdf import FPDF
 from PIL import ImageFont, ImageDraw, Image
 from datetime import date
@@ -666,5 +666,6 @@ async def on_raw_reaction_add(payload):
               mydb.commit()
               
     
-live()        
+
+
 client.run(TOKEN)
