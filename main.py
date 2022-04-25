@@ -531,7 +531,7 @@ async def on_message(message):
             while volver!="LSPD" and volver!="LSFD" and volver!="Mecánico":
               volver = await pregunta_md(message,client,"Por favor escriba correctamente la facción: LSPD, LSFD o MEC (para mecánico)")
               print (volver)
-            await message.delete()
+            
             pre_dia = await pregunta_md(message,client,"Por favor, indica que día quieres la cita, por ejemplo 2022-05-01 en formato YYYY-MM-DD")
            
             z_dia = pre_dia
