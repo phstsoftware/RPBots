@@ -132,7 +132,7 @@ async def pregunta_md(mensaje, client, texto):
   time.sleep(1)
   
   return volver
-async def pregunta(mensaje, texto):
+async def pregunta_md(mensaje, texto):
   """
   :param mensaje: int, mensaje principal
   :param texto: str, Texto a mandar
@@ -318,8 +318,8 @@ async def on_message(message):
             print("no se puede borrar")
         elif message.content == "/autoriza" and autorizado == 1:
          
-          pers = await pregunta(message,"Escriba el id del nuevo autorizado")
-          nombre = await pregunta(message, "Escriba el nombre ic")
+          pers = await pregunta_md(message,"Escriba el id del nuevo autorizado")
+          nombre = await pregunta_md(message, "Escriba el nombre ic")
           sql = "INSERT INTO autorizado (discord_id, entidad, nombre) VALUES (%s, %s, %s)"
           val = (pers, entidad, nombre)
           mycursor.execute(sql, val)
@@ -332,10 +332,10 @@ async def on_message(message):
           await mandar_mensaje(message.channel,"Añadido <@{0}> como autorizado".format(pers))
         elif message.content == "/alta" and autorizado == 1:
           
-          nombre = await pregunta(message,"Escriba el nombre del nuevo miembro")
-          rango = await pregunta(message,"Escriba el rango del nuevo miembro")
-          id_pers = await pregunta(message,"Escriba el id de Discord del nuevo miembro")
-          num_placa = await pregunta(message,"Escriba el número de placa/identificación del nuevo miembro")
+          nombre = await pregunta_md(message,"Escriba el nombre del nuevo miembro")
+          rango = await pregunta_md(message,"Escriba el rango del nuevo miembro")
+          id_pers = await pregunta_md(message,"Escriba el id de Discord del nuevo miembro")
+          num_placa = await pregunta_md(message,"Escriba el número de placa/identificación del nuevo miembro")
           sql = "INSERT INTO empleados (entidad, discord_id, nombre, rango, trabajado, entrado_trabajar, en_servicio, numero_de_placa) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
           val = (entidad, id_pers, nombre, rango, 0, 0, 0, num_placa)
           mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
@@ -347,7 +347,7 @@ async def on_message(message):
           await mandar_mensaje(message.channel,"Añadido {0} (<@{1}>)".format(nombre,id_pers))
         elif message.content == "/baja" and autorizado == 1:
           
-          id_pers = await pregunta(message,"Escriba el id de Discord del miembro a eliminar")
+          id_pers = await pregunta_md(message,"Escriba el id de Discord del miembro a eliminar")
           
           sql = "DELETE FROM empleados WHERE discord_id = {0}".format(id_pers)
          
@@ -362,8 +362,8 @@ async def on_message(message):
             print("no se puede borrar")
         elif message.content == "/entidad" and entidad_existe(message,mycursor) == False:
           await mandar_mensaje(message.channel,"```Bienvenido al nuevo bot```")
-          nombre = await pregunta(message,"```Escriba el nombre de la nueva entidad```")
-          server = await pregunta(message,"Introduzca la clave da activación de su servidor, si no la conoce pregunte a <@418102275974758419>") # si no es correcta se rechazará por la bd
+          nombre = await pregunta_md(message,"```Escriba el nombre de la nueva entidad```")
+          server = await pregunta_md(message,"Introduzca la clave da activación de su servidor, si no la conoce pregunte a <@418102275974758419>") # si no es correcta se rechazará por la bd
           mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
           mycursor = mydb.cursor() 
           sql = "INSERT INTO entidad (nombre, discord, actualizado, servidor) VALUES (%s, %s, %s, %s)"
@@ -387,7 +387,7 @@ async def on_message(message):
             
             mydb.commit()
           
-            await mandar_mensaje(message.channel,"```Hecho, te explicamos los comandos\n- /fichar: fichar/desfichar\n- /alta: añadir un trabajador\n- /baja: quitar a un trabajador\n- /resumen: Resumen de las horas hechas por los trabajadores (se reiniciarán después de mostrarlo\n -/monitor: para poner un monitor y poder ver los empleados de servicio```")
+            await mandar_mensaje(message.channel,"```Hecho, te explicamos los comandos\n- /fichar: fichar/desfichar\n- /alta: añadir un trabajador\n- /baja: quitar a un trabajador\n- /resumen: Resumen de las horas hechas por los trabajadores (se reiniciarán después de mostrarlo\n -/monitor: para poner un monitor y poder ver los empleados de servicio\n -/aceptar_cita: si se quiere usar el comando /cita para aceptar citas \n*Se dispone de más comandos dependiendo de cada facción*```")
             await mandar_mensaje(message.channel,"```Ante cualquier bug. Por favor repórtelo, con captura de pantalla a poder ser, a ```<@418102275974758419>```. Gracias")
             try:
               await message.delete()
@@ -443,13 +443,14 @@ async def on_message(message):
                 
                 mensaje = await message.channel.send("`{0} ({1})`".format(x[0],x[1]))
                 await mensaje.add_reaction('\N{THUMBS UP SIGN}')
-              
+        
         elif message.content == "/dispensable" and autorizado == 1:
             id = -1
-            await mandar_mensaje(message.channel,"Bienvenido al sistema de sincronización de base de datos para dispensables\n");
+            await message.author.send("```Bienvenido al sistema de sincronización de base de datos para dispensables\n```")
+           
             encontrar = False
             while(encontrar==False):
-              nombre = await pregunta(message,"Introduzca el nombre de la entidad a sincronizar");
+              nombre = await pregunta_md(message,"```Introduzca el nombre de la entidad a sincronizar```");
               encontrar = False
               mycursor.execute("SELECT `id` FROM entidad WHERE nombre = \"{0}\" AND servidor = {1}".format(nombre,server))
               myresult = mycursor.fetchall()
@@ -458,8 +459,8 @@ async def on_message(message):
                 id = x[0] #nos guardamos el id de la entidad de destino
            
             
-            dispensable = await pregunta(message, "escriba el nombre del dispensable a controlar")
-            precio = await pregunta(message, "introduzca el precio por unidad a cobrar a la entidad")
+            dispensable = await pregunta_md(message, "```escriba el nombre del dispensable a controlar```")
+            precio = await pregunta_md(message, "```introduzca el precio por unidad a cobrar a la entidad```")
             
             mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
             mycursor = mydb.cursor() 
@@ -477,9 +478,10 @@ async def on_message(message):
                 mensaje = await message.channel.send("`{0} ({1})`".format(x[0],x[1]))
                 await mensaje.add_reaction('\N{THUMBS UP SIGN}')
         elif message.content == "/monitorear" and autorizado==1:
+            await message.delete()
             encontrar = False
             while(encontrar==False):
-              nombre = await pregunta(message,"Introduzca el nombre de la entidad a monitorear");
+              nombre = await pregunta_md(message,"```Introduzca el nombre de la entidad a monitorear```");
               encontrar = False
               
               mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
@@ -505,9 +507,18 @@ async def on_message(message):
             mycursor.execute(sql, val)
               
             mydb.commit()
+        elif message.content == "/acepta_cita" and autorizado==1:
+              sql = "UPDATE entidad SET canal_cita = {0} WHERE id = {1}".format(message.channel.id,entidad)
+
+              mycursor.execute(sql)
+              
+              mydb.commit()
+              await message.channel.send("```Se ha configurado este canal para recibir citas```")
+              await message.delete()
         elif message.content == "/cita":
           mycursor.execute("SELECT `id` FROM servidores WHERE server_id = {0}".format(message.guild.id)) #cargamos el servidor
           myresult = mycursor.fetchall()
+          await message.delete()
           servidor_id = -1
           for x in myresult:
             servidor_id = x[0] # nos guardamos el id
@@ -559,18 +570,17 @@ async def on_message(message):
               
                 
                 
-                
                
               
                 mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
                 mycursor = mydb.cursor()  
-                mycursor.execute("SELECT `canal_cita` FROM entidad WHERE id = {0} AND servidor = {1}".format(entidad,servidor_id))
+                mycursor.execute("SELECT `id`,`canal_cita` FROM entidad WHERE tipo_entidad = {0} AND servidor = {1}".format(volver,servidor_id))
                 
                 myresult = mycursor.fetchall()
                 canal_id = 0
                 for x in myresult:
-                    canal_id = x[0]
-                    
+                    canal_id = x[1]
+                    entidad = x[0]
                 channel = client.get_channel(canal_id)
                 
                 
@@ -666,6 +676,5 @@ async def on_raw_reaction_add(payload):
               mydb.commit()
               
     
-
-
+     
 client.run(TOKEN)
