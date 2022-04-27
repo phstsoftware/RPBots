@@ -63,7 +63,6 @@ def restart_bot():
 
 
 
-client = discord.Client()
 
 
 
@@ -115,6 +114,23 @@ async def mandar_mensaje(channel, texto):
   :param texto: str, Texto a mandar
   """
   await channel.send(texto,delete_after = 60)
+async def pregunta_md_join(member, client, texto):
+  """
+  :param mensaje: int, mensaje principal
+  :param texto: str, Texto a mandar
+  """
+  
+  await member.send("```{0}```".format(texto),delete_after = 60)
+
+  def check(m):
+      global volver
+      volver = m.content
+      return m.content != "" and m.author == member
+
+  await client.wait_for("message", check=check)
+  time.sleep(1)
+  
+  return volver
 async def pregunta_md(mensaje, client, texto):
   """
   :param mensaje: int, mensaje principal
@@ -173,31 +189,60 @@ def entidad_existe(message, mycursor):
   for x in myresult_auth:
     ok = True
   return ok
-@client.event
-
-
-async def on_ready():
-    print("conectado")
-    #bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
-    #bot.db = bot.mongo["menudocs"]
-    global cluster
-
-   # cluster = pymongo.MongoClient(mongo_nom)
-
-    
     
 
-def bd(mydb, mycursor):
-  mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)
-  mycursor = mydb.cursor()
-  return mycursor
 global entidad
 global actualizado
 global tipo_entidad
-intents = discord.Intents.default()
+
+
+intents = discord.Intents.all()
 intents.members = True
 
 client = discord.Client(intents=intents)
+@client.event
+async def on_member_join(member):
+    print("Entrado")
+    mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
+    mycursor = mydb.cursor()  
+    mycursor.execute("SELECT `id`,`nombre` FROM entidad WHERE  discord = {0}".format(member.guild.id))
+    #busquem si ha estat enviat desde una facció
+    myresult = mycursor.fetchall()
+    encontrado = False
+    for x in myresult:
+      #hem trobat la facció, volem saber el seu id i el seu nom
+      entidad = x[0]
+      nombre = x[1]
+      encontrado = True
+    if encontrado == True:
+      
+      m = await pregunta_md_join(member, client, "Hola 👋\nNecesito saber si has entrado para trabajar ic en {0}\n\nResponde con 1 o \"sí\" si vienes a trabajar IC y quieres ser dado de alta en la máquina de fichar, responde 0 o \"no\" y desapareceré lentamente de tus mds".format(nombre))
+      
+      if m == "sí" or m == "1" or m == "si":
+        #toca registrarlo
+        m = await pregunta_md_join(member, client, "Indícame tu nombre ic por favor")
+        
+        
+        sql = "INSERT INTO empleados (entidad, discord_id, nombre, rango, trabajado, entrado_trabajar, en_servicio, numero_de_placa) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        val = (entidad, member.id, m, "Alumno", 0, 0, 0, "0")
+        mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
+        mycursor = mydb.cursor() 
+        mycursor.execute(sql, val)
+        
+        mydb.commit()
+        await member.send("```Gracias, ya puedes usar el comando /fichar```")
+      else:
+        #pedimos perdon
+        await member.send("```Perfecto, discupla las molestias```")
+    else:
+      print(member.guild.id)
+@client.event
+async def on_ready():
+    print("conectado")
+    
+
+    
+
 @client.event
 async def on_message(message):
     if message.author.bot:
@@ -235,6 +280,7 @@ async def on_message(message):
           
             mycursor.execute("SELECT * FROM empleados WHERE entidad = "+str(entidad)+" AND discord_id = "+str(message.author.id))
             myresult_auth = mycursor.fetchall()
+            encontrado = False
             for t in myresult_auth:
                 #si encontramos el usuario que buscamos
                 encontrado = True #apuntamos que hemos encontrado a la persona
@@ -624,38 +670,9 @@ async def on_message(message):
           await LSFD(mydb, mycursor,message,client,entidad)
         elif tipo_entidad == "LSPD":
           await LSPD(mydb, mycursor, entidad,message,client)
+          
 
-@client.event
-async def on_member_join(member):
-    mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
-    mycursor = mydb.cursor()  
-    mycursor.execute("SELECT `id`,`nombre` FROM entidad WHERE  servidor = {0}".format(member.guild.id))
-    #busquem si ha estat enviat desde una facció
-    myresult = mycursor.fetchall()
-    encontrado = False
-    for x in myresult:
-      #hem trobat la facció, volem saber el seu id i el seu nom
-      entidad = x[0]
-      nombre = x[1]
-      encontrado = True
-    if encontrado == True:
-      await member.send("```Hola 👋\nNecesito saber si has entrado para trabajar ic en {0}\n\nResponde con 1 o \"sí\" si vienes a trabajar IC y quieres ser dado de alta en la máquina de fichar, responde 0 o \"no\" y desapareceré lentamente de tus mds```".format(nombre))
-      m = await client.wait_for_message(author=member, channel=member)
-      if m.content == "sí" or m.content == "1" or m.content == "si":
-        #toca registrarlo
-        await member.send("```Indícame tu nombre ic por favor```")
-        m = await client.wait_for_message(author=member, channel=member)
-        sql = "INSERT INTO empleados (entidad, discord_id, nombre, rango, trabajado, entrado_trabajar, en_servicio, numero_de_placa) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        val = (entidad, member.id, m, "Alumno", 0, 0, 0, "0")
-        mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
-        mycursor = mydb.cursor() 
-        mycursor.execute(sql, val)
-        
-        mydb.commit()
-        await member.send("```Gracias, ya puedes usar el comando /fichar```")
-      else:
-        #pedimos perdon
-        await member.send("```Perfecto, discupla las molestias```")
+
 @client.event
 async def on_raw_reaction_add(payload):
     mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
