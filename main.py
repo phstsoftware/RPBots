@@ -414,8 +414,8 @@ async def on_message(message):
             print("no se puede borrar")
         elif message.content == "/entidad" and entidad_existe(message,mycursor) == False:
           await mandar_mensaje(message.channel,"```Bienvenido al nuevo bot```")
-          nombre = await pregunta_md(message,client,"```Escriba el nombre de la nueva entidad```")
-          server = await pregunta_md(message,client,"Introduzca la clave da activación de su servidor, si no la conoce pregunte a <@418102275974758419>") # si no es correcta se rechazará por la bd
+          nombre = await pregunta_md(message,client,"Escriba el nombre de la nueva entidad")
+          server = await pregunta_md(message,client,"Introduzca la clave da activación de su servidor, si no la conoce pregunte a ```<@418102275974758419>``` por favor") # si no es correcta se rechazará por la bd
           mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
           mycursor = mydb.cursor() 
           sql = "INSERT INTO entidad (nombre, discord, actualizado, servidor) VALUES (%s, %s, %s, %s)"
@@ -502,7 +502,7 @@ async def on_message(message):
            
             encontrar = False
             while(encontrar==False):
-              nombre = await pregunta_md(message,client,"```Introduzca el nombre de la entidad a sincronizar```");
+              nombre = await pregunta_md(message,client,"Introduzca el nombre de la entidad a sincronizar");
               encontrar = False
               mycursor.execute("SELECT `id` FROM entidad WHERE nombre = \"{0}\" AND servidor = {1}".format(nombre,server))
               myresult = mycursor.fetchall()
@@ -511,8 +511,8 @@ async def on_message(message):
                 id = x[0] #nos guardamos el id de la entidad de destino
            
             
-            dispensable = await pregunta_md(message,client, "```escriba el nombre del dispensable a controlar```")
-            precio = await pregunta_md(message,client, "```introduzca el precio por unidad a cobrar a la entidad```")
+            dispensable = await pregunta_md(message,client, "escriba el nombre del dispensable a controlar")
+            precio = await pregunta_md(message,client, "introduzca el precio por unidad a cobrar a la entidad")
             
             mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
             mycursor = mydb.cursor() 
@@ -533,7 +533,7 @@ async def on_message(message):
             await message.delete()
             encontrar = False
             while(encontrar==False):
-              nombre = await pregunta_md(message,client,"```Introduzca el nombre de la entidad a monitorear```");
+              nombre = await pregunta_md(message,client,"Introduzca el nombre de la entidad a monitorear");
               encontrar = False
               
               mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
