@@ -1,5 +1,8 @@
 #Bot creado por davidoc1109, copyright RP BOTS
 #Todos los derechos reservados
+
+TOKEN ="OTYyNzI2ODIxNDgzNDEzNTQ3.YlLvOA.ws6zIGYbVw2kUeEdnsUxtAl-EUo"
+
 import base64
 from facciones import LSFD,LSPD,Mecanico
 
@@ -54,7 +57,7 @@ except:
 
 URL = "https://rpbots.000webhostapp.com/?e={0}&t={1}"
 
-TOKEN ="OTYyNzI2ODIxNDgzNDEzNTQ3.YlLvOA.ws6zIGYbVw2kUeEdnsUxtAl-EUo"
+
 
 bot = commands.Bot
 
@@ -120,7 +123,7 @@ async def pregunta_md_join(member, client, texto):
   :param texto: str, Texto a mandar
   """
   
-  await member.send("```{0}```".format(texto),delete_after = 60)
+  await member.send("```{0}```".format(texto))
 
   def check(m):
       global volver
@@ -137,7 +140,7 @@ async def pregunta_md(mensaje, client, texto):
   :param texto: str, Texto a mandar
   """
   
-  await mensaje.author.send("```{0}```".format(texto),delete_after = 60)
+  await mensaje.author.send("```{0}```".format(texto))
 
   def check(m):
       global volver
@@ -367,7 +370,7 @@ async def on_message(message):
           except:
             print("no se puede borrar")
         elif message.content == "/autoriza" and autorizado == 1:
-         
+          await message.delete()
           pers = await pregunta_md(message,client,"Escriba el id del nuevo autorizado")
           nombre = await pregunta_md(message,client, "Escriba el nombre ic")
           sql = "INSERT INTO autorizado (discord_id, entidad, nombre) VALUES (%s, %s, %s)"
@@ -381,9 +384,10 @@ async def on_message(message):
           print(pers)
           await mandar_mensaje(message.channel,"Añadido <@{0}> como autorizado".format(pers))
         elif message.content == "/changelog" and autorizado == 1:
+          await message.delete()
           await message.channel.send("```Changelog del bot\n- Añadido el comando /monitorear para establecer el monitoreo de una facción\n- Añadido el comando /autoriza para añadir a un nuevo autorizado al bot\n- Añadido el /acepta_cita para establecer el canal de recibir citas\n- Ahora el bot pregunta por md para no molestar.\n- Mejorada la estabilidad (ahora no se bería caer, en toería).\n- Añadido al fín el comando /cita para pedir cita con policía, EMS o Mecánico.\n- Funciones mejoradas para las facciones (descúbrelo IC)```")
         elif message.content == "/alta" and autorizado == 1:
-          
+          await message.delete()
           nombre = await pregunta_md(message,client,"Escriba el nombre del nuevo miembro")
           rango = await pregunta_md(message,client,"Escriba el rango del nuevo miembro")
           id_pers = await pregunta_md(message,client,"Escriba el id de Discord del nuevo miembro")
@@ -413,6 +417,7 @@ async def on_message(message):
           except:
             print("no se puede borrar")
         elif message.content == "/entidad" and entidad_existe(message,mycursor) == False:
+          await message.delete()
           await mandar_mensaje(message.channel,"```Bienvenido al nuevo bot```")
           nombre = await pregunta_md(message,client,"Escriba el nombre de la nueva entidad")
           server = await pregunta_md(message,client,"Introduzca la clave da activación de su servidor, si no la conoce pregunte a ```<@418102275974758419>``` por favor") # si no es correcta se rechazará por la bd
@@ -448,6 +453,7 @@ async def on_message(message):
           else:
             await mandar_mensaje((message.channel),"Ha ocurrido un error, asegúerese que la clave de activación del servidor sea correcta ")
         elif message.content == "/liquidar" and autorizado == 1:
+            await message.delete()
             #liquida dispensable
             messages = await message.channel.history(limit=200).flatten()
             vendidos = 0
@@ -497,6 +503,7 @@ async def on_message(message):
                 await mensaje.add_reaction('\N{THUMBS UP SIGN}')
         
         elif message.content == "/dispensable" and autorizado == 1:
+            await message.delete()
             id = -1
             await message.author.send("```Bienvenido al sistema de sincronización de base de datos para dispensables\n```")
            
