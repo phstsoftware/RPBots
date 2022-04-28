@@ -338,10 +338,10 @@ async def on_message(message):
                 
           
                 mydb.commit()
-                await message.author.send("```Hecho, te he añadido a la máquina de fichajes. Ahora tendrás una mención en ```<#{0}>```, asegúrate que te ha llegado```".format(message.channel.id))
-                await mandar_mensaje(message.channel,"He añadido {0} (<@{1}>)".format(nombre,id_pers), delete_after = 20)
+                await message.author.send("```Hecho, te he añadido a la máquina de fichajes. Ahora tendrás una mención en ```<#{0}>```asegúrate que te ha llegado, por favor```".format(message.channel.id))
+                await mandar_mensaje(message.channel,"He añadido {0} (<@{1}>)".format(nombre,id_pers))
               else:
-                await  message.author.send("Perfecto, cualquier cosa me dices :)")
+                await  message.author.send("```Perfecto, cualquier cosa me dices :)```")
             await actualiza_monitor(entidad)
             try:
               await message.delete()
