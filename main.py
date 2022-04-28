@@ -205,7 +205,8 @@ intents.members = True
 client = discord.Client(intents=intents)
 @client.event
 async def on_member_join(member):
-    print("Entrado")
+    print("Entrado Discord")
+    print("SELECT `id`,`nombre` FROM entidad WHERE  discord = {0}".format(member.guild.id))
     mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
     mycursor = mydb.cursor()  
     mycursor.execute("SELECT `id`,`nombre` FROM entidad WHERE  discord = {0}".format(member.guild.id))
@@ -323,6 +324,22 @@ async def on_message(message):
             else:
               #en caso de que no exista en la base de datos
               await mandar_mensaje(message.channel,"Error, usted no existe en la base de datos.")
+              si = await pregunta_md(message,client,"Hola 👋\nVeo que no estás dado de alta en la máquina de fichar. ¿Quieres que te tramite el alta yo mismo? (En caso afirmativo 1 o sí, de lo contrario responde 0 o no)")
+              if si=="1" or si == "si" or si == "sí":
+                nombre = await pregunta_md(message, client, "Indícame tu nombre ic, por favor")
+                rango = await pregunta_md(message,client,"Dime tu rango ic ahora mismo")
+                id_pers = message.author.id
+                num_placa = await pregunta_md(message,client,"Escribe tu número de placa/identificación, por favor")
+                sql = "INSERT INTO empleados (entidad, discord_id, nombre, rango, trabajado, entrado_trabajar, en_servicio, numero_de_placa) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+                val = (entidad, id_pers, nombre, rango, 0, 0, 0, num_placa)
+                mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
+                mycursor = mydb.cursor() 
+                mycursor.execute(sql, val)
+                
+          
+                mydb.commit()
+                await message.author.send("Hecho, te he añadido a la máquina de fichajes. Ahora tendrás una mención en ```<#{0}>```, asegúrate que te ha llegado".format(message.channel.id))
+                await mandar_mensaje(message.channel,"Añadido {0} (<@{1}>)".format(nombre,id_pers))
             await actualiza_monitor(entidad)
             try:
               await message.delete()
@@ -373,7 +390,7 @@ async def on_message(message):
           await message.delete()
           pers = await pregunta_md(message,client,"Escriba el id del nuevo autorizado")
           nombre = await pregunta_md(message,client, "Escriba el nombre ic")
-          sql = "INSERT INTO autorizado (discord_id, entidad, nombre) VALUES (%s, %s, %s)"
+          sql = "INSERT INTO autorizado (disc_id, entidad, nombre) VALUES (%s, %s, %s)"
           val = (pers, entidad, nombre)
           mycursor.execute(sql, val)
           
