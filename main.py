@@ -234,7 +234,7 @@ async def on_member_join(member):
         mycursor.execute(sql, val)
         
         mydb.commit()
-        await member.send("```Gracias, ya puedes usar el comando /fichar```")
+        await member.send("```Gracias, ya puedes usar el comando -fichar```")
       else:
         #pedimos perdon
         await member.send("```Perfecto, discupla las molestias```")
@@ -252,7 +252,7 @@ async def on_message(message):
     if message.author.bot:
       return
 
-    if message.content.startswith('/'):
+    if message.content.startswith('/') or message.content.startswith('-'):
         mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)
         mycursor = mydb.cursor()
         
@@ -279,7 +279,7 @@ async def on_message(message):
         #cluster = pymongo.MongoClient("mongodb+srv://AdolfoFormo:adolfoformohores@control-hores.g7r5s.mongodb.net/LSFD?retryWrites=true&w=majority")
         
         
-        if message.content == "/fichar":
+        if message.content == "-fichar":
           #manda el mensaje para fichar
           
             mycursor.execute("SELECT * FROM empleados WHERE entidad = "+str(entidad)+" AND discord_id = "+str(message.author.id))
@@ -439,7 +439,7 @@ async def on_message(message):
           await message.delete()
           await mandar_mensaje(message.channel,"```Bienvenido al nuevo bot```")
           nombre = await pregunta_md(message,client,"Escriba el nombre de la nueva entidad")
-          server = await pregunta_md(message,client,"Introduzca la clave da activación de su servidor, si no la conoce pregunte a ```<@418102275974758419>``` por favor") # si no es correcta se rechazará por la bd
+          server = await pregunta_md(message,client,"Introduzca la clave da activación de su servidor, si no la conoce pregunte a ```<@418102275974758419>") # si no es correcta se rechazará por la bd
           mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
           mycursor = mydb.cursor() 
           sql = "INSERT INTO entidad (nombre, discord, actualizado, servidor) VALUES (%s, %s, %s, %s)"
@@ -463,7 +463,7 @@ async def on_message(message):
             
             mydb.commit()
           
-            await mandar_mensaje(message.channel,"```Hecho, te explicamos los comandos\n- /fichar: fichar/desfichar\n- /alta: añadir un trabajador\n- /baja: quitar a un trabajador\n- /resumen: Resumen de las horas hechas por los trabajadores (se reiniciarán después de mostrarlo\n -/monitor: para poner un monitor y poder ver los empleados de servicio\n -/aceptar_cita: si se quiere usar el comando /cita para aceptar citas \n*Se dispone de más comandos dependiendo de cada facción*```")
+            await mandar_mensaje(message.channel,"```Hecho, te explicamos los comandos\n- -fichar: fichar/desfichar\n- /alta: añadir un trabajador\n- /baja: quitar a un trabajador\n- /resumen: Resumen de las horas hechas por los trabajadores (se reiniciarán después de mostrarlo\n -/monitor: para poner un monitor y poder ver los empleados de servicio\n -/aceptar_cita: si se quiere usar el comando /cita para aceptar citas \n*Se dispone de más comandos dependiendo de cada facción*```")
             await mandar_mensaje(message.channel,"```Ante cualquier bug. Por favor repórtelo, con captura de pantalla a poder ser, a ```<@418102275974758419>```. Gracias")
             try:
               await message.delete()
