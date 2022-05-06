@@ -811,6 +811,7 @@ async def LSFD(mydb, mycursor,message,client, entidad):
                   
                   mycursor.execute("SELECT `nombre`,`sexo`,`nace`, `ini`, `ms`, `sangre` FROM clientes WHERE entidad = {0} AND chan = {1}".format(entidad,message.channel.id))
                   myresult = mycursor.fetchall()
+                  enc = 0
                   for p in myresult:
                         nombre = p[0]
                         inciales2 = p[3]
