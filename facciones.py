@@ -557,7 +557,7 @@ async def LSFD(mydb, mycursor,message,client, entidad):
 
            
         elif message.content == "/mostrar paciente":
-            mycursor.execute("SELECT nombre, sexo, sangre, nace, tel, al, med,  seguro_med FROM clientes WHERE entidad = {0} AND chan = {1}".format(entidad,message.channel.id)) #buscamos al paciente, si no existe se le pregunta_mdran los datos
+            mycursor.execute("SELECT nombre, sexo, sangre, nace, tel, al, med, seguro_med FROM clientes WHERE entidad = {0} AND chan = {1}".format(entidad,message.channel.id)) #buscamos al paciente, si no existe se le pregunta_mdran los datos
             myresult = mycursor.fetchall()
             enc = 0
             for x in myresult:
@@ -578,7 +578,7 @@ async def LSFD(mydb, mycursor,message,client, entidad):
               ms = await channl.send("```Nombre: {}\nSexo: {}\nFecha nacimiento: {}\nGrupo sanguíneo: {}\nTeléfono Contacto: {}\nAlergias Conocidas: {}\nProblemas Mèdicos: {}\nSeguro Médico Hasta: {}```".format(
               nom,sex,nace,sang_db,telefono,al_db,med_db,seg_db))
             else:
-              message.channel.send("```El paciente no ha sido encontrado en la base de datos```",delete_after = 20)
+              await message.channel.send("```El paciente no ha sido encontrado en la base de datos```",delete_after = 20)
         elif message.content == "/enlazar paciente":
             await message.delete()
             nom = await pregunta_md(message,client,"Introduzca el nombre del paciente:")
