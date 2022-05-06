@@ -661,7 +661,7 @@ async def LSFD(mydb, mycursor,message,client, entidad):
               print(seguro)
               enc = 1         
             if enc == 0:
-                    await message.channel.send("Paciente no encontrado, escriba /enlazar paciente para enlazarlo",delete_after = 60)
+                    await message.channel.send("```Paciente no encontrado, escriba /enlazar paciente para enlazarlo```",delete_after = 60)
             else:
               dias_seguro = await pregunta_md(message, client,"Introduzca cuantos días ha contratado el seguro")
               if str(seguro)!="None" :
@@ -670,7 +670,7 @@ async def LSFD(mydb, mycursor,message,client, entidad):
                  #no ha caducado
                   end_date = date.today() + timedelta(days=int(dias_seguro))
                   mens_edit = await message.channel.fetch_message(id_mens)
-                  await mens_edit.edit(content = "Nombre: {}\nSexo: {}\nFecha nacimiento: {}\nGrupo sanguíneo: {}\nTeléfono Contacto: {}\nAlergias Conocidas: {}\nProblemas Mèdicos: {}\nSeguro Médico Hasta: {}".format(nombre2,sexo2,nacimiento2,sab_sang,tel,al,med,end_date.strftime("%Y-%m-%d")))
+                  await mens_edit.edit(content = "```Nombre: {}\nSexo: {}\nFecha nacimiento: {}\nGrupo sanguíneo: {}\nTeléfono Contacto: {}\nAlergias Conocidas: {}\nProblemas Mèdicos: {}\nSeguro Médico Hasta: {}```".format(nombre2,sexo2,nacimiento2,sab_sang,tel,al,med,end_date.strftime("%Y-%m-%d")))
                   #db = cluster["Clientes"]
                   mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
                   mycursor = mydb.cursor()  
@@ -687,7 +687,7 @@ async def LSFD(mydb, mycursor,message,client, entidad):
                   print(end_date)
                   mens_edit = await message.channel.fetch_message(id_mens)
                   print(id_mens)
-                  await mens_edit.edit(content = "Nombre: {}\nSexo: {}\nFecha nacimiento: {}\nGrupo sanguíneo: {}\nTeléfono Contacto: {}\nAlergias Conocidas: {}\nProblemas Mèdicos: {}\nSeguro Médico Hasta: {}".format(nombre2,sexo2,nacimiento2,sab_sang,tel,al,med,end_date.strftime("%Y-%m-%d")))
+                  await mens_edit.edit(content = "```Nombre: {}\nSexo: {}\nFecha nacimiento: {}\nGrupo sanguíneo: {}\nTeléfono Contacto: {}\nAlergias Conocidas: {}\nProblemas Mèdicos: {}\nSeguro Médico Hasta: {}```".format(nombre2,sexo2,nacimiento2,sab_sang,tel,al,med,end_date.strftime("%Y-%m-%d")))
                  # db = cluster["Clientes"]
 
                   mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
@@ -705,7 +705,7 @@ async def LSFD(mydb, mycursor,message,client, entidad):
                   print(end_date)
                   mens_edit = await message.channel.fetch_message(id_mens)
                   print(id_mens)
-                  await mens_edit.edit(content = "Nombre: {}\nSexo: {}\nFecha nacimiento: {}\nGrupo sanguíneo: {}\nTeléfono Contacto: {}\nAlergias Conocidas: {}\nProblemas Mèdicos: {}\nSeguro Médico Hasta: {}".format(nombre2,sexo2,nacimiento2,sab_sang,tel,al,med,end_date.strftime("%Y-%m-%d")))
+                  await mens_edit.edit(content = "```Nombre: {}\nSexo: {}\nFecha nacimiento: {}\nGrupo sanguíneo: {}\nTeléfono Contacto: {}\nAlergias Conocidas: {}\nProblemas Mèdicos: {}\nSeguro Médico Hasta: {}```".format(nombre2,sexo2,nacimiento2,sab_sang,tel,al,med,end_date.strftime("%Y-%m-%d")))
                  # db = cluster["Clientes"]
 
                   mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
@@ -805,7 +805,7 @@ async def LSFD(mydb, mycursor,message,client, entidad):
                   ,delete_after = 500)
                   
         elif message.content == "/resguardo":
-                  
+                  await message.delete()
                   
                   mycursor.execute("SELECT `nombre`,`sexo`,`nace`, `ini`, `ms`, `sangre` FROM clientes WHERE entidad = {0} AND chan = {1}".format(entidad,message.channel.id))
                   myresult = mycursor.fetchall()
