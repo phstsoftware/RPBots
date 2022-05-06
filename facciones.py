@@ -526,123 +526,27 @@ async def LSFD(mydb, mycursor,message,client, entidad):
         print("LSFD")
         if message.content == "/nuevo paciente":
           #create object
-            await message.channel.send("Introduzca el nombre del paciente:",delete_after = 60)
+            await message.delete
+            nom = await pregunta_md(message,client,"Introduzca el nombre del paciente:")
+            sex = await pregunta_md(message,client,"Escriba \"h\" si es un hombre y \"m\" si es una mujer:")
 
-            def check(m):
-                global nom
-                nom = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("Escriba \"h\" si es un hombre y \"m\" si es una mujer:",delete_after = 60)
-
-            def check(m):
-                global sex
-                sex = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("Escriba la fecha de nacimiento del paciente en formato YYYY-MM-DD:",delete_after = 60)
-
-            def check(m):
-                global nace
-                nace = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("Escriba el número de teléfono del paciente:",delete_after = 60)
-
-            def check(m):
-                global telefono
-                telefono = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("En el caso de que tenga alergias descríbalas, en caso contrario escriba \"-\"",delete_after = 60)
-
-            def check(m):
-                global al_db
-                al_db = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("En el caso de que tenga problemas médicos descríbalas, en caso contrario escriba \"-\"",delete_after = 60)
-
-            def check(m):
-                global med_db
-                med_db = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("En el caso de que sepa su grupo sanguíneo indíquelo, si no lo sabe escriba \"-\"",delete_after = 60)
-
-            def check(m):
-                global sang_db
-                sang_db = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("En el caso de que tenga seguro médico escríba la fecha de vencimiento en formato YYYY-MM-DD, si no tiene escriba \"-\"",delete_after = 60)
-
-            def check(m):
-                global seg_db
-                seg_db = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
+            nace = await pregunta_md(message,client,"Escriba la fecha de nacimiento del paciente en formato YYYY-MM-DD:")
+            telefono = await pregunta_md(message,client, "Escriba el número de teléfono del paciente:")
+            al_db = await pregunta_md(message,client,"En el caso de que tenga alergias descríbalas, en caso contrario escriba \"-\"")
+            med_db = await pregunta_md(message,client,"En el caso de que tenga problemas médicos descríbalas, en caso contrario escriba \"-\"")
+            sang_db = await pregunta_md(message,client,"En el caso de que sepa su grupo sanguíneo indíquelo, si no lo sabe escriba \"-\"")
+            seg_db = await pregunta_md(message, client, "En el caso de que tenga seguro médico escríba la fecha de vencimiento en formato YYYY-MM-DD, si no tiene escriba \"-\"")
+            iniciales_pac = await pregunta_md(message,client,  "Escriba EN MAYÚSCULAS las 2 primeras letras del nombre y las 2 primeras letras del apellido:  ")
             
-            await message.channel.send(
-                "Escriba EN MAYÚSCULAS las 2 primeras letras del nombre y las 2 primeras letras del apellido:  "
-            ,delete_after = 60)
-
-            def check(m):
-                global iniciales_pac
-                iniciales_pac = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-            time.sleep(1)
-            await client.wait_for("message", check=check)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
+            
 
             guild = message.author.guild
             channl = await guild.create_text_channel(nom)
+            await message.author.send("Creado <#{0}>".format(channl.id))
             ms = await channl.send("Nombre: {}\nSexo: {}\nFecha nacimiento: {}\nGrupo sanguíneo: {}\nTeléfono Contacto: {}\nAlergias Conocidas: {}\nProblemas Mèdicos: {}\nSeguro Médico Hasta: {}".format(nom,sex,nace,sang_db,telefono,al_db,med_db,seg_db))
             mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
             mycursor = mydb.cursor()   
-            print("conectado")
+           
             sql = "INSERT INTO clientes (entidad,nombre, sexo, sangre, nace, tel, al, med, chan, ms, ini, seguro_med) VALUES ,(%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             val = (entidad,nom, sex, sang_db, nace, telefono, al_db, med_db, channl.id, ms.id, iniciales_pac, seg_db)
             
@@ -653,125 +557,27 @@ async def LSFD(mydb, mycursor,message,client, entidad):
            
             
         elif message.content == "/enlazar paciente":
-            await message.channel.send("Introduzca el nombre del paciente:",delete_after = 60)
+            await message.delete
+            nom = await pregunta_md(message,client,"Introduzca el nombre del paciente:")
+            sex = await pregunta_md(message,client,"Escriba \"h\" si es un hombre y \"m\" si es una mujer:")
 
-            def check(m):
-                global nom
-                nom = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("Escriba \"h\" si es un hombre y \"m\" si es una mujer:",delete_after = 60)
-
-            def check(m):
-                global sex
-                sex = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("Escriba la fecha de nacimiento del paciente en formato YYYY-MM-DD:",delete_after = 60)
-
-            def check(m):
-                global nace
-                nace = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("Escriba el número de teléfono del paciente:",delete_after = 60)
-
-            def check(m):
-                global tel_link
-                tel_link = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("En el caso de que tenga alergias escríbalas por aquí, si no tiene escriba \"-\"",delete_after = 60)
-
-            def check(m):
-                global al_link
-                al_link = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("En el caso de que tenga problemas médicos escríbalos por aquí, si no tiene escriba \"-\"",delete_after = 60)
-
-            def check(m):
-                global med_link
-                med_link = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("En el caso de que sepa su grupo sanguíneo escríbalo por aquí, si no lo sabe escriba \"-\"",delete_after = 60)
-
-            def check(m):
-                global sang_link
-                sang_link = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            await message.channel.send("En el caso de que tenga seguro médico escríba por aquí la fecha de vencimiento en formato YYYY-MM-DD, si no lo tiene escriba \"-\"",delete_after = 60)
-
-            def check(m):
-                global seg_link
-                seg_link = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-
-            await client.wait_for("message", check=check)
-            time.sleep(1)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
-            
-            await message.channel.send(
-                "Escriba EN MAYÚSCULAS las 2 primeras letras del nombre y las 2 primeras letras del apellido:  "
-            ,delete_after = 60)
-
-            def check(m):
-                global iniciales_enlazar
-                iniciales_enlazar = m.content
-                return m.content != "" and m.channel == message.channel and m.author == message.author
-            time.sleep(1)
-            await client.wait_for("message", check=check)
-            msg = await message.channel.fetch_message(message.channel.last_message_id)
-                  
-            await msg.delete()
+            nace = await pregunta_md(message,client,"Escriba la fecha de nacimiento del paciente en formato YYYY-MM-DD:")
+            telefono = await pregunta_md(message,client, "Escriba el número de teléfono del paciente:")
+            al_db = await pregunta_md(message,client,"En el caso de que tenga alergias descríbalas, en caso contrario escriba \"-\"")
+            med_db = await pregunta_md(message,client,"En el caso de que tenga problemas médicos descríbalas, en caso contrario escriba \"-\"")
+            sang_db = await pregunta_md(message,client,"En el caso de que sepa su grupo sanguíneo indíquelo, si no lo sabe escriba \"-\"")
+            seg_db = await pregunta_md(message, client, "En el caso de que tenga seguro médico escríba la fecha de vencimiento en formato YYYY-MM-DD, si no tiene escriba \"-\"")
+            iniciales_pac = await pregunta_md(message,client,  "Escriba EN MAYÚSCULAS las 2 primeras letras del nombre y las 2 primeras letras del apellido:  ")
             
             
             channl = message.channel
+            await message.author.send("Creado <#{0}>".format(channl.id))
             ms = await channl.send("Nombre: {}\nSexo: {}\nFecha nacimiento: {}\nGrupo sanguíneo: {}\nTeléfono Contacto: {}\nAlergias Conocidas: {}\nProblemas Mèdicos: {}\nSeguro Médico Hasta: {}".format(nom,sex,nace,sang_link,tel_link,al_link,med_link,seg_link))
             mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
             mycursor = mydb.cursor()   
             print("conectado")
             sql = "INSERT INTO clientes (entidad,nombre, sexo, sangre, nace, tel, al, med, chan, ms, ini, seguro_med) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (entidad,nom, sex, sang_link, nace, tel_link, al_link, med_link, channl.id, ms.id, iniciales_enlazar, seg_link)
+            val = (entidad,nom, sex, sang_db, nace, telefono, al_db, med_db, channl.id, ms.id, iniciales_pac, seg_db)
             
             mycursor.execute(sql, val)
             

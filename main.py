@@ -514,7 +514,7 @@ async def on_message(message):
             if entidad_id != -1:
               await message.author.send("_Factura de {0}_\n**Entidad de origen:** *{1}*\n**Entidad de destino:** *{2}*\n**Cantidad dispensada:** *{3}*\n**Precio unitario:** *{4}*\n***Total a pagar:*** *{5}*".format(nom_disp,entidad_origen,entidad,vendidos,precio,cobrar))
              # mydb = cluster[entidad]
-              mycursor.execute("SELECT `nombre`,`rango` FROM empleados WHERE entidad = {0}".format(entidad_id))
+              mycursor.execute("SELECT `nombre`,`numero_de_placa` FROM empleados WHERE entidad = {0}".format(entidad_id))
               myresult = mycursor.fetchall()
               for x in myresult:
                 
@@ -549,7 +549,7 @@ async def on_message(message):
             
             mydb.commit()
           
-            mycursor.execute("SELECT `nombre`,`rango` FROM empleados WHERE entidad = {0}".format(id)) #cargamos los de la entidad de destino
+            mycursor.execute("SELECT `nombre`,`numero_de_placa` FROM empleados WHERE entidad = {0}".format(id)) #cargamos los de la entidad de destino
             myresult = mycursor.fetchall()
             for x in myresult:
                 
