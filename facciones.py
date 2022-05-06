@@ -1,3 +1,4 @@
+import string
 import time
 import mysql.connector as mysql
 from fpdf import FPDF
@@ -569,7 +570,7 @@ async def LSFD(mydb, mycursor,message,client, entidad):
                   telefono = x[4]
                   al_db = x[5]
                   med_db = x[6]
-
+                  seg_db = x[7]
             await message.delete()
             #except:
             if enc==1:
@@ -851,7 +852,7 @@ async def LSFD(mydb, mycursor,message,client, entidad):
                     eje_x = 310   #Ponlo bien porfa xd
                     eje_x_2 = 530
                     draw.text((eje_x,135), nombre, (0,0,0), font=font)
-                    draw.text((eje_x_2,157), nacimiento, (0,0,0), font=font)
+                    draw.text((eje_x_2,157), str(nacimiento), (0,0,0), font=font)
                     draw.text((eje_x,178), "APTO", (0,0,0), font=font)
                     draw.text((eje_x,225), pers_name, (0,0,0), font=font)
                     draw.text((eje_x_2,245), num_placa, (0,0,0), font=font)
