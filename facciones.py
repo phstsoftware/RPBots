@@ -526,7 +526,7 @@ async def LSFD(mydb, mycursor,message,client, entidad):
         print("LSFD")
         if message.content == "/nuevo paciente":
           #create object
-            await message.delete
+            await message.delete()
             nom = await pregunta_md(message,client,"Introduzca el nombre del paciente:")
             sex = await pregunta_md(message,client,"Escriba \"h\" si es un hombre y \"m\" si es una mujer:")
 
@@ -557,7 +557,7 @@ async def LSFD(mydb, mycursor,message,client, entidad):
            
             
         elif message.content == "/enlazar paciente":
-            await message.delete
+            await message.delete()
             nom = await pregunta_md(message,client,"Introduzca el nombre del paciente:")
             sex = await pregunta_md(message,client,"Escriba \"h\" si es un hombre y \"m\" si es una mujer:")
 
