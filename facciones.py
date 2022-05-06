@@ -542,19 +542,19 @@ async def LSFD(mydb, mycursor,message,client, entidad):
 
             guild = message.author.guild
             channl = await guild.create_text_channel(nom)
-            await message.author.send("Creado <#{0}>".format(channl.id))
+            
             ms = await channl.send("```Nombre: {}\nSexo: {}\nFecha nacimiento: {}\nGrupo sanguíneo: {}\nTeléfono Contacto: {}\nAlergias Conocidas: {}\nProblemas Mèdicos: {}\nSeguro Médico Hasta: {}```".format(
               nom,sex,nace,sang_db,telefono,al_db,med_db,seg_db))
             mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
             mycursor = mydb.cursor()   
            
-            sql = "INSERT INTO clientes (entidad,nombre, sexo, sangre, nace, tel, al, med, chan, ms, ini, seguro_med) VALUES ,(%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            sql = "INSERT INTO clientes (entidad,nombre, sexo, sangre, nace, tel, al, med, chan, ms, ini, seguro_med) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             val = (entidad,nom, sex, sang_db, nace, telefono, al_db, med_db, channl.id, ms.id, iniciales_pac, seg_db)
             
             mycursor.execute(sql, val)
             
             mydb.commit()
-
+            await message.author.send("Creado <#{0}>".format(channl.id))
            
         elif message.content == "/mostrar paciente":
             mycursor.execute("SELECT nombre, sexo, sangre, nace, tel, al, med, seguro_med FROM clientes WHERE entidad = {0} AND chan = {1}".format(entidad,message.channel.id)) #buscamos al paciente, si no existe se le pregunta_mdran los datos
@@ -594,7 +594,6 @@ async def LSFD(mydb, mycursor,message,client, entidad):
             
             
             channl = message.channel
-            await message.author.send("Creado <#{0}>".format(channl.id))
             ms = await channl.send("```Nombre: {}\nSexo: {}\nFecha nacimiento: {}\nGrupo sanguíneo: {}\nTeléfono Contacto: {}\nAlergias Conocidas: {}\nProblemas Mèdicos: {}\nSeguro Médico Hasta: {}```".format(
               nom,sex,nace,sang_db,telefono,al_db,med_db,seg_db))
             mydb  = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)   
@@ -606,11 +605,9 @@ async def LSFD(mydb, mycursor,message,client, entidad):
             mycursor.execute(sql, val)
             
             mydb.commit()
-           # db = cluster["Clientes"]
-
-           
-            
-            
+          
+            await message.author.send("Creado <#{0}>".format(channl.id))
+         
         
         
         
