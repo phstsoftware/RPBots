@@ -361,7 +361,7 @@ async def on_message(message):
          
             trabajado = x[4] #leemos lo trabajado
             horas = (trabajado/60)/60
-            await message.channel.send("{0} ({2}) -  {1} horas .".format(x[2],horas,x[3])) #mostramos el mensaje
+            await message.channel.send("{0} ({2}) -  {1} horas .".format(x[2],round(horas,2),x[3])) #mostramos el mensaje
             
             
             sql = "UPDATE empleados SET trabajado = 0 WHERE entidad = {0} AND discord_id = {1} ".format(entidad,x[1])
