@@ -360,7 +360,8 @@ async def on_message(message):
           for x in myresult_auth:
          
             trabajado = x[4] #leemos lo trabajado
-            await message.channel.send("{0} ({5}) - {1} días, {2} horas, {3} minutos, {4} segundos.".format(x[2],time.gmtime(trabajado).tm_yday-1,time.gmtime(trabajado).tm_hour,time.gmtime(trabajado).tm_min,time.gmtime(trabajado).tm_sec,x[3])) #mostramos el mensaje
+            horas = (trabajado/60)/60
+            await message.channel.send("{0} ({3}) -  {1} horas .".format(x[2],horas,x[3])) #mostramos el mensaje
             
             
             sql = "UPDATE empleados SET trabajado = 0 WHERE entidad = {0} AND discord_id = {1} ".format(entidad,x[1])
@@ -405,6 +406,14 @@ async def on_message(message):
         elif message.content == "/changelog" and autorizado == 1:
           await message.delete()
           await message.channel.send("```Changelog del bot\n- Añadido el comando /monitorear para establecer el monitoreo de una facción\n- Añadido el comando /autoriza para añadir a un nuevo autorizado al bot\n- Añadido el /acepta_cita para establecer el canal de recibir citas\n- Ahora el bot pregunta por md para no molestar.\n- Mejorada la estabilidad (ahora no se bería caer, en toería).\n- Añadido al fín el comando /cita para pedir cita con policía, EMS o Mecánico.\n- Funciones mejoradas para las facciones (descúbrelo IC)```")
+        elif message.content == "/placa":
+          num_placa = await pregunta_md(message, client, "Indique su número de placa")
+          sql = "UPDATE empleados set numero_de_placa = {0} WHERE entidad = {1} AND discord_id = {2}".format(num_placa,entidad,message.author.id)
+          await mandar_mensaje(message.channel,"Cambiado")
+          try:
+            await message.delete()
+          except:
+            print("no se puede borrar")
         elif message.content == "/alta" and autorizado == 1:
           await message.delete()
           nombre = await pregunta_md(message,client,"Escriba el nombre del nuevo miembro")
@@ -420,6 +429,15 @@ async def on_message(message):
           mydb.commit()
           
           await mandar_mensaje(message.channel,"Añadido {0} (<@{1}>)".format(nombre,id_pers))
+        elif message.content == "/placa":
+          print("Placa")
+          num_placa = await pregunta_md(message, client, "Indique su número de placa")
+          sql = "UPDATE empleados set numero_de_placa = {0} WHERE entidad = {1} AND discord_id = {2}".format(num_placa,entidad,message.author.id)
+          await mandar_mensaje(message.channel,"Cambiado")
+          try:
+            await message.delete()
+          except:
+            print("no se puede borrar")
         elif message.content == "/baja" and autorizado == 1:
           
           id_pers = await pregunta_md(message,client,"Escriba el id de Discord del miembro a eliminar")
@@ -514,7 +532,7 @@ async def on_message(message):
             if entidad_id != -1:
               await message.author.send("_Factura de {0}_\n**Entidad de origen:** *{1}*\n**Entidad de destino:** *{2}*\n**Cantidad dispensada:** *{3}*\n**Precio unitario:** *{4}*\n***Total a pagar:*** *{5}*".format(nom_disp,entidad_origen,entidad,vendidos,precio,cobrar))
              # mydb = cluster[entidad]
-              mycursor.execute("SELECT `nombre`,`numero_de_placa` FROM empleados WHERE entidad = {0}".format(entidad_id))
+              mycursor.execute("SELECT `nombre`,`numero_de_placa` FROM empleados WHERE entidad = {0} ORDER BY numero_de_placa".format(entidad_id))
               myresult = mycursor.fetchall()
               for x in myresult:
                 
