@@ -380,7 +380,7 @@ async def on_message(message):
           mycursor.execute("SELECT * FROM empleados WHERE entidad = "+str(entidad))
           myresult_auth = mycursor.fetchall()
           for x in myresult_auth:
-         
+            
             trabajado = x[4] #leemos lo trabajado
             await message.channel.send("{0} ({5}) - {1} días, {2} horas, {3} minutos, {4} segundos.".format(x[2],time.gmtime(trabajado).tm_yday-1,time.gmtime(trabajado).tm_hour-1,time.gmtime(trabajado).tm_min,time.gmtime(trabajado).tm_sec,x[3])) #mostramos el mensaje
             
@@ -389,6 +389,34 @@ async def on_message(message):
             await message.delete()
           except:
             print("no se puede borrar")
+        elif message.conent == "/incentivos" and autorizado == 1:
+          # Procedemos a mandar por md a todo el mundo su incentivo
+          await message.channel.send("Procedo a enviar incentivos, un momento....")
+          mycursor.execute("SELECT * FROM empleados WHERE entidad = "+str(entidad))
+          myresult_auth = mycursor.fetchall()
+          for x in myresult_auth:
+            trabajado = x[4] #leemos lo trabajado
+            horas = (trabajado/60)/60
+            cantidad = int(horas) * 100
+            horas_trab = cantidad
+            suplemento = 0
+            if(horas > 10):
+              suplemento += 2000
+              if(horas > 20):
+                suplemento += 3000
+                if(horas > 30):
+                  suplemento += 4000
+            cantidad = cantidad + suplemento #le sumamos el suplemento
+            certificados = x[8]*500 #total de certificados
+            certificados_aviacion = x[10]*750 #total de certificados de aviacion
+            alumnos = (x[9]/4)*1500 #lo que corresponde por alumno
+            cantidad = cantidad + alumnos + certificados_aviacion + certificados
+            usuario = await client.fetch_user(x[1]); #cogemos el usurio a partir de su id de discord
+            embedVar = discord.Embed(title="Incentivos", description="Desc", color=0x00ff00)
+            embedVar.add_field(name="Field1", value="Hola {0}\nSe le adjunta la liquidación de incentivos correspondiente a esta quincena".format(x[2]), inline=False)
+            embedVar.add_field(name="Field2", value="Horas trabajadas ({0}): {1}\nIncentivo horas: {2}\nCertificados Médicos: {3}\nCertificados Aviación: {4}\nAlumnos: {5}\nTotal: {6}".format(int(horas),horas_trab,suplemento,certificados, certificados_aviacion,alumnos,cantidad), inline=False)
+            await usuario.send(embed=embedVar)
+            
         elif message.content == "/autoriza" and autorizado == 1:
           await message.delete()
           pers = await pregunta_md(message,client,"Escriba el id del nuevo autorizado")
