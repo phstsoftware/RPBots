@@ -1,7 +1,7 @@
 #Bot creado por davidoc1109, copyright RP BOTS
 #Todos los derechos reservados
 
-TOKEN ="OTYyNzI2ODIxNDgzNDEzNTQ3.GlV5cO.jnlTRP3YXPWwbdOQtWe4RLrvBR_fSTay5gqH2I"
+TOKEN ="OTYyNzI2ODIxNDgzNDEzNTQ3.GpFBoF.8c6JPQ-zD3nODnORmcikR2gpnRmrymBmCguosw"
 
 import base64
 from facciones import LSFD,LSPD,Mecanico
