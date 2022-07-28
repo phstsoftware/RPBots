@@ -400,8 +400,8 @@ async def on_message(message):
                       mensaje = "Otorgado a {0} (#{1}) por su gran esfuerzo realizando el curso de:".format(recibe_nombre, recibe_placa)
                       motivo = await pregunta_md(message, client,"Escriba el certificado por el que se le atorga el diploma")
                       nombre_correo = recibe_nombre
-                      nombre_correo.replace(" ", "")
-                      correo = "-----------------------------------------------\nDe: **no-reply@lsfd.gov**\nPara: **{0}@lsfd.gov**\nAsunto: Diploma\n-------------------------------------------------\nHola <@{1}>\nDesde la jefatura del deparatmento de ingenieros nos congraturla hacerle llegar un nuevo diploma sobre una instrucción realizada.\nEn concreto le hacemos llegar el diploma correspondiente a: __{2}__\nEspermos que usted siga obteniendo muchos más\nSaludos cordiales,\nJefatura del Condado de Los Santos Fire Departament\n-------------------------------------------------\n__Este correo ha sido enviado desde una dirección que no acepta correos. Para hablar con jefatura escriba un correo a jefatura@lsfd.gov__".format(nombre_correo,recibe_discord,motivo)
+                      
+                      correo = "-----------------------------------------------\nDe: **no-reply@lsfd.gov**\nPara: **{0}@lsfd.gov**\nAsunto: Diploma\n-------------------------------------------------\nHola <@{1}>\nDesde la jefatura del deparatmento de ingenieros nos congraturla hacerle llegar un nuevo diploma sobre una instrucción realizada.\nEn concreto le hacemos llegar el diploma correspondiente a: \n**_{2}_**\nEspermos que usted siga obteniendo muchos más\nSaludos cordiales,\nJefatura del Condado de Los Santos Fire Departament\n-------------------------------------------------\n_Este correo ha sido enviado desde una dirección que no acepta correos. Para hablar con jefatura escriba un correo a jefatura@lsfd.gov_".format(nombre_correo.replace(" ",""),recibe_discord,motivo)
                       await message.channel.send(correo)
                       today = date.today()  
                       fecha = today.strftime("%Y-%m-%d")
