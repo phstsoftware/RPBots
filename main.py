@@ -422,8 +422,8 @@ async def on_message(message):
                       font_mano = ImageFont.truetype('DancingScript-Regular.ttf', 20)
                       draw.text((eje_x,370), expide_nombre, (0,0,0), font=font_mano) 
                       draw.text((eje_x,410), "#{0}".format(expide_placa), (0,0,0), font=font) 
-                      draw.text((eje_x*4,370), recibe_nombre, (0,0,0), font=font_mano) 
-                      draw.text((eje_x*4,410), "#{0}".format(recibe_placa), (0,0,0), font=font) 
+                      draw.text((eje_x*4,370), "Los Santos", (0,0,0), font=font_mano) 
+                      draw.text((eje_x*4,410),today.strftime("%d/%m/%Y") , (0,0,0), font=font) 
                       img.save("diploma.png")
                       await message.channel.send(file=discord.File("diploma.png")) 
                     
