@@ -409,7 +409,8 @@ async def on_message(message):
                       W, H = (300,200)
                       eje_x = 310   
                       eje_x_2 = 530
-                      draw.text((eje_x,170), mensaje, (0,0,0), font=font)
+                      w, h = draw.textsize(mensaje)
+                      draw.text(((W-w)/2,170), mensaje, (0,0,0), font=font)
                       w, h = draw.textsize(motivo)
                       draw.text(((W-w)/2,190), motivo, fill="black")
                        
