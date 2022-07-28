@@ -446,7 +446,7 @@ async def on_message(message):
             await message.delete()
           except:
             print("no se puede borrar")
-        elif message.conent == "/incentivos" and autorizado == 1:
+        elif message.content == "/incentivos" and autorizado == 1:
           # Procedemos a mandar por md a todo el mundo su incentivo
           await message.channel.send("Procedo a enviar incentivos, un momento....")
           mycursor.execute("SELECT * FROM empleados WHERE entidad = "+str(entidad))
