@@ -410,10 +410,10 @@ async def on_message(message):
                       eje_x = W/4 #una cuarta parte del tamaño   
                       eje_x_2 = 530
                       w, h = draw.textsize(mensaje)
-                      draw.text(((W-w)/2,170), mensaje, (0,0,0), font=font)
+                      draw.text(((W-w)/2,175), mensaje, (0,0,0), font=font)
                       w, h = draw.textsize(motivo)
                       font_2 = ImageFont.truetype('Raleway-Black.ttf', 61)
-                      draw.text(((W-w)/2,200), motivo, font=font_2)
+                      draw.text(((W-w)/2,210), motivo, (0,0,0), font=font_2)
                       
                       draw.text((eje_x,370), expide_nombre, (0,0,0), font=font) 
                       draw.text((eje_x,390), expide_placa, (0,0,0), font=font) 
