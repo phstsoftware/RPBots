@@ -415,11 +415,11 @@ async def on_message(message):
                       w = w*3
                       font_2 = ImageFont.truetype('Raleway-Black.ttf', 37)
                       draw.text(((W-w)/2,210), motivo, (0,0,0), font=font_2)
-                      font_mano = ImageFont.truetype('DancingScript-Regular.ttf', 14)
+                      font_mano = ImageFont.truetype('DancingScript-Regular.ttf', 20)
                       draw.text((eje_x,370), expide_nombre, (0,0,0), font=font_mano) 
-                      draw.text((eje_x,390), expide_placa, (0,0,0), font=font) 
-                      draw.text((eje_x*5,370), recibe_nombre, (0,0,0), font=font_mano) 
-                      draw.text((eje_x*5,390), recibe_placa, (0,0,0), font=font) 
+                      draw.text((eje_x,410), expide_placa, (0,0,0), font=font) 
+                      draw.text((eje_x*4,370), recibe_nombre, (0,0,0), font=font_mano) 
+                      draw.text((eje_x*4,410), recibe_placa, (0,0,0), font=font) 
                       img.save("diploma.png")
                       await message.channel.send(file=discord.File("diploma.png")) 
                     
