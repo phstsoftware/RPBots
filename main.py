@@ -407,7 +407,7 @@ async def on_message(message):
                       font = ImageFont.truetype('Roboto-Regular.ttf', 14)
                       
                       W, H = (936,460) # tamaño del archivo
-                      eje_x = W/4 #una cuarta parte del tamaño   
+                      eje_x = W/6 #una cuarta parte del tamaño   
                       eje_x_2 = 530
                       w, h = draw.textsize(mensaje)
                       draw.text(((W-w)/2,175), mensaje, (0,0,0), font=font)
@@ -415,9 +415,11 @@ async def on_message(message):
                       w = w*3
                       font_2 = ImageFont.truetype('Raleway-Black.ttf', 37)
                       draw.text(((W-w)/2,210), motivo, (0,0,0), font=font_2)
-                      
-                      draw.text((eje_x,370), expide_nombre, (0,0,0), font=font) 
+                      font_mano = ImageFont.truetype('DancingScript-Regular.ttf', 14)
+                      draw.text((eje_x,370), expide_nombre, (0,0,0), font=font_mano) 
                       draw.text((eje_x,390), expide_placa, (0,0,0), font=font) 
+                      draw.text((eje_x*5,370), recibe_nombre, (0,0,0), font=font_mano) 
+                      draw.text((eje_x*5,390), recibe_placa, (0,0,0), font=font) 
                       img.save("diploma.png")
                       await message.channel.send(file=discord.File("diploma.png")) 
                     
