@@ -371,7 +371,51 @@ async def on_message(message):
               await message.delete()
           except:
               print("no se puede borrar")
+        elif message.content == "/diploma":
+                  await message.delete()
+                  
+                  mycursor.execute("SELECT `nombre`,`rango`,`numero_de_placa` FROM empleados WHERE entidad = {0} AND tablon = {1}".format(entidad,message.channel.id))
+                  myresult = mycursor.fetchall()
+                  enc = 0
+                  for p in myresult:
+                        recibe_nombre = p[0] #guardamos el nombre
+                        recibe_rango = p[1] #guardamos el rango
+                        recibe_placa = p[2] #guardamos el numero de placa
+                        enc=1
+                  if enc == 0:
+                    await message.channel.send("Paciente no encontrado, escriba /enlazar paciente para enlazarlo",delete_after = 60)
+                  else:
+                    
+                  #  db = cluster["Clientes"]
+                    mycursor.execute("SELECT `nombre`,`numero_de_placa` FROM empleados WHERE entidad = {0} AND discord_id = {1}".format(entidad,message.author.id))
+                    myresult = mycursor.fetchall()
+                    enc = 0
+                    for x in myresult:
+                        expide_nombre = x[0]
+                       
+                        expide_placa = x[1]
+                        enc=1
+                    if enc == 1:
+                      mensaje = "Otorgado a {0} (#{1}) por su gran esfuerzo realizando el curso de:".format(recibe_nombre, recibe_placa)
+                      motivo = pregunta(message,"Escriba el certificado por el que se le atorga el diploma")
+                    
+                      today = date.today()  
+                      fecha = today.strftime("%Y-%m-%d")
+    
+                      img = Image.open("plant_diploma.png")
+                      draw = ImageDraw.Draw(img)
+                      font = ImageFont.truetype('Roboto-Regular.ttf', 14)
+                      eje_x = 310   
+                      eje_x_2 = 530
+                      draw.text((eje_x,135), mensaje, (0,0,0), font=font)
+                      draw.text((eje_x,135), motivo, (0,0,0), font=font)   
+                      draw.text((eje_x,135), expide_nombre, (0,0,0), font=font) 
+                      draw.text((eje_x,135), expide_placa, (0,0,0), font=font) 
+                      img.save("diploma.png")
+                      await message.channel.send(file=discord.File("diploma.png")) 
+                    
         elif message.content == "/actualiza" and autorizado == 1:
+        
           await message.channel.send("Resumen desde {0}".format(actualizado))
           sql = "UPDATE entidad SET actualizado = {0} WHERE id = {1}".format(str(datetime.today().strftime('%Y-%m-%d')),entidad)
           mycursor.execute(sql)          
