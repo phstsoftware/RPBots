@@ -411,7 +411,7 @@ async def on_message(message):
                       eje_x_2 = 530
                       draw.text((eje_x,170), mensaje, (0,0,0), font=font)
                       w, h = draw.textsize(motivo)
-                      draw.text(((W-w)/2,(H-h)/2), motivo, fill="black")
+                      draw.text(((W-w)/2,190), motivo, fill="black")
                        
                       draw.text((eje_x,350), expide_nombre, (0,0,0), font=font) 
                       draw.text((eje_x,375), expide_placa, (0,0,0), font=font) 
