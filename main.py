@@ -405,12 +405,16 @@ async def on_message(message):
                       img = Image.open("plant_diploma.png")
                       draw = ImageDraw.Draw(img)
                       font = ImageFont.truetype('Roboto-Regular.ttf', 14)
+                      
+                      W, H = (300,200)
                       eje_x = 310   
                       eje_x_2 = 530
-                      draw.text((eje_x,160), mensaje, (0,0,0), font=font)
-                      draw.text((eje_x,190), motivo, (0,0,0), font=font)   
-                      draw.text((eje_x,250), expide_nombre, (0,0,0), font=font) 
-                      draw.text((eje_x,260), expide_placa, (0,0,0), font=font) 
+                      draw.text((eje_x,170), mensaje, (0,0,0), font=font)
+                      w, h = draw.textsize(motivo)
+                      draw.text(((W-w)/2,(H-h)/2), motivo, fill="black")
+                       
+                      draw.text((eje_x,350), expide_nombre, (0,0,0), font=font) 
+                      draw.text((eje_x,375), expide_placa, (0,0,0), font=font) 
                       img.save("diploma.png")
                       await message.channel.send(file=discord.File("diploma.png")) 
                     
