@@ -407,10 +407,10 @@ async def on_message(message):
                       font = ImageFont.truetype('Roboto-Regular.ttf', 14)
                       eje_x = 310   
                       eje_x_2 = 530
-                      draw.text((eje_x,140), mensaje, (0,0,0), font=font)
-                      draw.text((eje_x,150), motivo, (0,0,0), font=font)   
-                      draw.text((eje_x,165), expide_nombre, (0,0,0), font=font) 
-                      draw.text((eje_x,180), expide_placa, (0,0,0), font=font) 
+                      draw.text((eje_x,160), mensaje, (0,0,0), font=font)
+                      draw.text((eje_x,190), motivo, (0,0,0), font=font)   
+                      draw.text((eje_x,250), expide_nombre, (0,0,0), font=font) 
+                      draw.text((eje_x,260), expide_placa, (0,0,0), font=font) 
                       img.save("diploma.png")
                       await message.channel.send(file=discord.File("diploma.png")) 
                     
