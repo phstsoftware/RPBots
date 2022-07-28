@@ -406,7 +406,7 @@ async def on_message(message):
                       draw = ImageDraw.Draw(img)
                       font = ImageFont.truetype('Roboto-Regular.ttf', 14)
                       
-                      W, H = (300,200)
+                      W, H = (936,460) # tamaño del archivo
                       eje_x = 310   
                       eje_x_2 = 530
                       w, h = draw.textsize(mensaje)
