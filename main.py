@@ -374,13 +374,14 @@ async def on_message(message):
         elif message.content == "/diploma":
                   await message.delete()
                   
-                  mycursor.execute("SELECT `nombre`,`rango`,`numero_de_placa` FROM empleados WHERE entidad = {0} AND tablon = {1}".format(entidad,message.channel.id))
+                  mycursor.execute("SELECT `nombre`,`rango`,`numero_de_placa`, `discord_id` FROM empleados WHERE entidad = {0} AND tablon = {1}".format(entidad,message.channel.id))
                   myresult = mycursor.fetchall()
                   enc = 0
                   for p in myresult:
                         recibe_nombre = p[0] #guardamos el nombre
                         recibe_rango = p[1] #guardamos el rango
                         recibe_placa = p[2] #guardamos el numero de placa
+                        recibe_discord = p[3]
                         enc=1
                   if enc == 0:
                     await message.channel.send("Paciente no encontrado, escriba /enlazar paciente para enlazarlo",delete_after = 60)
@@ -398,7 +399,10 @@ async def on_message(message):
                     if enc == 1:
                       mensaje = "Otorgado a {0} (#{1}) por su gran esfuerzo realizando el curso de:".format(recibe_nombre, recibe_placa)
                       motivo = await pregunta_md(message, client,"Escriba el certificado por el que se le atorga el diploma")
-                    
+                      nombre_correo = recibe_nombre
+                      nombre_correo.replace(" ", "")
+                      correo = "-----------------------------------------------\nDe: **no-reply@lsfd.gov**\nPara: **{0}@lsfd.gov**\nAsunto: Diploma\n-------------------------------------------------\nHola <@{1}>\nDesde la jefatura del deparatmento de ingenieros nos congraturla hacerle llegar un nuevo diploma sobre una instrucción realizada.\nEn concreto le hacemos llegar el diploma correspondiente a: __{2}__\nEspermos que usted siga obteniendo muchos más\nSaludos cordiales,\nJefatura del Condado de Los Santos Fire Departament\n-------------------------------------------------\n__Este correo ha sido enviado desde una dirección que no acepta correos. Para hablar con jefatura escriba un correo a jefatura@lsfd.gov__".format(nombre_correo,recibe_discord,motivo)
+                      await message.channel.send(correo)
                       today = date.today()  
                       fecha = today.strftime("%Y-%m-%d")
     
@@ -417,9 +421,9 @@ async def on_message(message):
                       draw.text(((W-w)/2,210), motivo, (0,0,0), font=font_2)
                       font_mano = ImageFont.truetype('DancingScript-Regular.ttf', 20)
                       draw.text((eje_x,370), expide_nombre, (0,0,0), font=font_mano) 
-                      draw.text((eje_x,410), expide_placa, (0,0,0), font=font) 
+                      draw.text((eje_x,410), "#{0}".format(expide_placa), (0,0,0), font=font) 
                       draw.text((eje_x*4,370), recibe_nombre, (0,0,0), font=font_mano) 
-                      draw.text((eje_x*4,410), recibe_placa, (0,0,0), font=font) 
+                      draw.text((eje_x*4,410), "#{0}".format(recibe_placa), (0,0,0), font=font) 
                       img.save("diploma.png")
                       await message.channel.send(file=discord.File("diploma.png")) 
                     
