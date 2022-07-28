@@ -397,7 +397,7 @@ async def on_message(message):
                         enc=1
                     if enc == 1:
                       mensaje = "Otorgado a {0} (#{1}) por su gran esfuerzo realizando el curso de:".format(recibe_nombre, recibe_placa)
-                      motivo = pregunta(message,"Escriba el certificado por el que se le atorga el diploma")
+                      motivo = await pregunta_md(message,"Escriba el certificado por el que se le atorga el diploma")
                     
                       today = date.today()  
                       fecha = today.strftime("%Y-%m-%d")
