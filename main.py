@@ -384,7 +384,7 @@ async def on_message(message):
                         recibe_discord = p[3]
                         enc=1
                   if enc == 0:
-                    await message.channel.send("Paciente no encontrado, escriba /enlazar paciente para enlazarlo",delete_after = 60)
+                    await message.channel.send("Tablón no encontrado. Escriba /tablon para enlazarlo.",delete_after = 60)
                   else:
                     
                   #  db = cluster["Clientes"]
@@ -401,7 +401,7 @@ async def on_message(message):
                       motivo = await pregunta_md(message, client,"Escriba el certificado por el que se le atorga el diploma")
                       nombre_correo = recibe_nombre
                       
-                      correo = "-----------------------------------------------\nDe: **no-reply@lsfd.gov**\nPara: **{0}@lsfd.gov**\nAsunto: Diploma\n-------------------------------------------------\n\nHola <@{1}>\n\nDesde la jefatura del deparatmento de ingenieros nos congraturla hacerle llegar un nuevo diploma sobre una instrucción realizada.\nEn concreto le hacemos llegar el diploma correspondiente a: \n\n**_{2}_**\n\nEsperamos que siga obteniendo muchos más\n\nSaludos cordiales,\nJefatura del Condado de Los Santos Fire Departament\n\n-------------------------------------------------\n_Este correo ha sido enviado desde una dirección que no acepta correos, NO RESPONDA A ESTE CORREO. Puede ponerse en contacto con jefatura@lsfd.gov_".format(nombre_correo.replace(" ",""),recibe_discord,motivo)
+                      correo = "-----------------------------------------------\nDe: **no-reply@lsfd.gov**\nPara: **{0}@lsfd.gov**\nAsunto: Diploma\n-------------------------------------------------\n\nHola <@{1}>\nDesde la jefatura del deparatmento de ingenieros nos congraturla hacerle llegar un nuevo diploma sobre una instrucción realizada.\nEn concreto le hacemos llegar el diploma correspondiente a: \n\n**_{2}_**\n\nEsperamos que siga obteniendo muchos más\n\nSaludos cordiales,\nJefatura del Condado de Los Santos Fire Departament\n\n-------------------------------------------------\n_Este correo ha sido enviado desde una dirección que no acepta correos, NO RESPONDA A ESTE CORREO. Puede ponerse en contacto con jefatura@lsfd.gov_".format(nombre_correo.replace(" ",""),recibe_discord,motivo)
                       await message.channel.send(correo)
                       today = date.today()  
                       fecha = today.strftime("%Y-%m-%d")
