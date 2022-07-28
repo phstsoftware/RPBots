@@ -412,9 +412,9 @@ async def on_message(message):
                       w, h = draw.textsize(mensaje)
                       draw.text(((W-w)/2,170), mensaje, (0,0,0), font=font)
                       w, h = draw.textsize(motivo)
-                      font = ImageFont.truetype('Raleway-Black.ttf', 60)
-                      draw.text(((W-w)/2,200), motivo, font=font)
-                      font = ImageFont.truetype('Roboto-Regular.ttf', 14)
+                      font_2 = ImageFont.truetype('Raleway-Black.ttf', 60)
+                      draw.text(((W-w)/2,200), motivo, font=font_2)
+                      
                       draw.text((eje_x,370), expide_nombre, (0,0,0), font=font) 
                       draw.text((eje_x,390), expide_placa, (0,0,0), font=font) 
                       img.save("diploma.png")
