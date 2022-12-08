@@ -1,0 +1,24 @@
+table, th, td {
+    border: 1px solid;
+    padding: 5px;
+  }
+  table {
+    border-collapse: collapse;
+  }
+  p{
+      font-family: Arial, Helvetica, sans-serif;
+  }
+  h1{
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .hp-section {
+    background: #ffb6b6;
+    padding: 10px;
+    margin: 0 0 20px 0;
+    border-top: 1px solid #ebf3ff;
+    border-bottom: 1px solid #ebf3ff;
+    font-weight: normal;
+    overflow: hidden;
+    border-radius: 3px;
+}

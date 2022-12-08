@@ -1,0 +1,30 @@
+
+<style>
+
+h1 {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  h2{
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  p {
+    text-align: justify;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .salto {page-break-before: always;}
+  
+</style>
+<h1>Registro de horas a 27/Jun/2022 14:22:05</h1>
+<img src="https://i.imgur.com/LboXjdT.png" style="width:100px; height:auto;float:right">
+<table>
+<tr><th>
+    Nombre
+</th>
+<th>Rango</th>
+<th>Número Placa</th>
+<th>Trabajado</th>
+<th>Horas</th>
+</tr>
+<tr><td>Dylan Clark</td><td>EMT</td><td>2602</td><td>7:58:39</td><td>7</td></tr><tr><td>Anais Martínez</td><td>Alumna en Prácticas</td><td>5003</td><td>6:29:50</td><td>6</td></tr><tr><td>Maddy Moore</td><td>Paramédica</td><td>0023</td><td>6:13:18</td><td>6</td></tr><tr><td>Alan Harper</td><td>Paramédico</td><td>4444</td><td>5:47:55</td><td>5</td></tr><tr><td>Alberto DaSilva</td><td>EMT</td><td>1109</td><td>5:42:10</td><td>5</td></tr><tr><td>David Rockford</td><td>Alumno en Prácticas</td><td>2001</td><td>5:28:09</td><td>5</td></tr><tr><td>Darren Boden</td><td>Alumno en Prácticas</td><td>0375</td><td>5:00:15</td><td>5</td></tr><tr><td>Marlex Lockheart</td><td>Médico Especialista</td><td>6822</td><td>3:10:31</td><td>3</td></tr><tr><td>Aaron Harper</td><td>Supervisor de Seguridad</td><td>0103</td><td>1:59:34</td><td>1</td></tr><tr><td>Lazaro Crane</td><td>Guardia de Seguridad</td><td>0201</td><td>1:45:12</td><td>1</td></tr><tr><td>Kurt Kruckenberg</td><td>Jefe del Condado de Los Santos Fire Department</td><td>4352</td><td>0:00:07</td><td>0</td></tr><tr><td>Tracia Angones</td><td>EMT</td><td>1010</td><td>0:00:00</td><td>0</td></tr><tr><td>Luci Smith</td><td>Paramédico</td><td>7972</td><td>0:00:00</td><td>0</td></tr><tr><td>Sasha Ryder</td><td>Seguridad en Prácticas</td><td>0301</td><td>0:00:00</td><td>0</td></tr><tr><td>Fran Biurrun</td><td>Alumno en Prácticas</td><td>8262</td><td>0:00:00</td><td>0</td></tr><tr><td>Giorno Giovanna</td><td>Paramédico</td><td>4256</td><td>0:00:00</td><td>0</td></tr><tr><td>Gari Sasia</td><td>Guardia de Seguridad</td><td>0101</td><td>0:00:00</td><td>0</td></tr><tr><td>Queen Herrera</td><td>EMT</td><td>3862</td><td>0:00:00</td><td>0</td></tr></table>
