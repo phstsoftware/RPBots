@@ -11,19 +11,19 @@ Requisitos
 
 Instalación
 ============
-1- Abre el main.py
-2- Pega el token del bot
-3- Pega los datos de la base de datos
-4- Corre el rp_bots.sql en la base de datos
-5- Carga la carpeta web en el php
+1. Abre el main.py
+2. Pega el token del bot
+3. Pega los datos de la base de datos
+4. Corre el rp_bots.sql en la base de datos
+5. Carga la carpeta web en el php
 
 Configuración
 ============
-1- Invita al bot a un servidor
-2- Escribe /entidad para dar de alta una entidad (LSFD o LSPD)
-3- La contraseña por defecto es 1
-4- La persona que conteste y hable al bot será el primer autorizado
-5- SE RECOMIENDA QUE CADA EMPLEADO TENGA SU CANAL DE DISCORD A MODO DE TABLON
+1. Invita al bot a un servidor
+2. Escribe /entidad para dar de alta una entidad (LSFD o LSPD)
+3. La contraseña por defecto es 1
+4. La persona que conteste y hable al bot será el primer autorizado
+5. SE RECOMIENDA QUE CADA EMPLEADO TENGA SU CANAL DE DISCORD A MODO DE TABLON
 
 Comandos bot
 ============
