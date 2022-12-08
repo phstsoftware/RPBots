@@ -38,7 +38,7 @@ Comandos bot
 - /sangre : se hace un análisis de sangre y si el paciente no lo sabe se le dice su grupo sanguíneo 
 - /enlazar paciente : se enlaza el canal de un paciente con el paciente (antes de esto probad de hacer un /analisis).
 - /nuevo paciente : crea un canal para el paciente y lo enlaza.
-- /cita : (Permite a la gente pedir cita desde el servidor de Destino-RP)
+- /cita : (Permite a la gente pedir cita desde el servidor, con /acepta-cita permites pedir cita)
   ---> 👍 -> Aceptáis la cita y se le confirma al paciente automáticamente
   ---> 👎 -> Denegáis la cita, se le informa al paciente automáticamente y se borra el mensaje con la cita (podéis denegar una cita después de aceptarla, pero una vez denegada ya nada)
   ---> 🚑 -> El paciente ya ha sido atendido, se le mandan las gracias automáticamente por mensaje y se borra el mensaje con la cita
