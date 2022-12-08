@@ -1,8 +1,24 @@
-#Bot creado por davidoc1109, copyright RP BOTS
-#Todos los derechos reservados
+#Bot creado por davidoc1109
+# 
 
-TOKEN ="OTYyNzI2ODIxNDgzNDEzNTQ3.GftIEf.U0zF62r1S5EhcYhYpNv75dfSr4zysJ97ayFnb0"
+#---------------
+# YOUR DATA
+#---------------
+TOKEN = #Discord token
 
+# enter your server IP address/domain name
+HOST = # or "domain.com"
+# database name, if you want just to connect to MySQL server, leave it empty
+DATABASE = 
+# this is the user you create
+USER = 
+# user password
+PASSWORD = 
+
+
+#----------------
+# DO NOT TOUCH BEHIND HERE UNLESS YOU KNOW
+#----------------
 import base64
 from facciones import LSFD,LSPD,Mecanico
 
@@ -29,20 +45,12 @@ import requests
 
 
 global datos_persona
-global mongo_nom
-mongo_nom = "mongodb+srv://Destino:1234@cluster0.0fims.mongodb.net/prueba?retryWrites=true&w=majority"
+
 
 
 import mysql.connector as mysql
 
-# enter your server IP address/domain name
-HOST = "sql586.main-hosting.eu" # or "domain.com"
-# database name, if you want just to connect to MySQL server, leave it empty
-DATABASE = "u197027072_rp_bots"
-# this is the user you create
-USER = "u197027072_rp"
-# user password
-PASSWORD = "]3gRyy!?L]"
+
 global mydb
 # connect to MySQL server
 
@@ -55,7 +63,7 @@ except:
 
 
 
-URL = "https://rpbots.000webhostapp.com/?e={0}&t={1}"
+URL = "YOUR_URL/?e={0}&t={1}"
 
 
 
@@ -401,7 +409,7 @@ async def on_message(message):
                       motivo = await pregunta_md(message, client,"Escriba el certificado por el que se le atorga el diploma")
                       nombre_correo = recibe_nombre
                       
-                      correo = "-----------------------------------------------\nDe: **no-reply@lsfd.gov**\nPara: **{0}@lsfd.gov**\nAsunto: Diploma\n-------------------------------------------------\n\nHola <@{1}>\nDesde la jefatura del deparatmento de ingenieros nos congraturla hacerle llegar un nuevo diploma sobre una instrucción realizada.\nEn concreto le hacemos llegar el diploma correspondiente a: \n\n**_{2}_**\n\nEsperamos que siga obteniendo muchos más\n\nSaludos cordiales,\nJefatura del Condado de Los Santos Fire Departament\n\n-------------------------------------------------\n_Este correo ha sido enviado desde una dirección que no acepta correos, NO RESPONDA A ESTE CORREO. Puede ponerse en contacto con jefatura@lsfd.gov_".format(nombre_correo.replace(" ",""),recibe_discord,motivo)
+                      correo = "-----------------------------------------------\nDe: **no-reply@lsfd.gov**\nPara: **{0}@lsfd.gov**\nAsunto: Diploma\n-------------------------------------------------\n\nHola <@{1}>\nDesde la jefatura del departamento de ingenieros nos congraturla hacerle llegar un nuevo diploma sobre una instrucción realizada.\nEn concreto le hacemos llegar el diploma correspondiente a: \n\n**_{2}_**\n\nEsperamos que siga obteniendo muchos más\n\nSaludos cordiales,\nJefatura del Condado de Los Santos Fire Departament\n\n-------------------------------------------------\n_Este correo ha sido enviado desde una dirección que no acepta correos, NO RESPONDA A ESTE CORREO. Puede ponerse en contacto con jefatura@lsfd.gov_".format(nombre_correo.replace(" ",""),recibe_discord,motivo)
                       await message.channel.send(correo)
                       today = date.today()  
                       fecha = today.strftime("%Y-%m-%d")
@@ -413,11 +421,12 @@ async def on_message(message):
                       W, H = (936,460) # tamaño del archivo
                       eje_x = W/6 #una cuarta parte del tamaño   
                       eje_x_2 = 530
-                      w, h = draw.textsize(mensaje)
+                      w, h = draw.textsize(mensaje,font)
                       draw.text(((W-w)/2,175), mensaje, (0,0,0), font=font)
-                      w, h = draw.textsize(motivo)
-                      w = w*3
                       font_2 = ImageFont.truetype('Raleway-Black.ttf', 37)
+                      w, h = draw.textsize(motivo, font_2)
+                    
+                      
                       draw.text(((W-w)/2,210), motivo, (0,0,0), font=font_2)
                       font_mano = ImageFont.truetype('DancingScript-Regular.ttf', 20)
                       draw.text((eje_x,370), expide_nombre, (0,0,0), font=font_mano) 
